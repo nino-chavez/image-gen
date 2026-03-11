@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>{{eventName}}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: #0a0a0a;
+    color: #FDF8F0;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .poster {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 80px;
+    position: relative;
+  }
+  /* Art deco border */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 32px;
+    border: 2px solid #C4923A;
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  .poster::after {
+    content: '';
+    position: absolute;
+    inset: 40px;
+    border: 1px solid rgba(196,146,58,0.3);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .poster > * { position: relative; z-index: 1; }
+  .rx-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #C4923A;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+  .brand {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 0.9;
+    color: #FDF8F0;
+    margin-bottom: 8px;
+  }
+  .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: rgba(196,146,58,0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    margin-bottom: 64px;
+  }
+  .divider {
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #C4923A, transparent);
+    margin-bottom: 64px;
+  }
+  .event-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 80px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 0.95;
+    margin-bottom: 24px;
+  }
+  .format {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #C4923A;
+    margin-bottom: 16px;
+  }
+  .details {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    color: #9CA3AF;
+    line-height: 1.6;
+    margin-bottom: 64px;
+  }
+  .cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: #C4923A;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 16px 48px;
+    border: 1px solid #C4923A;
+  }
+  .footer {
+    position: absolute;
+    bottom: 72px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #4B5563;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="rx-mark">Rx</div>
+  <div class="brand">Volley Rx</div>
+  <div class="tagline">Your dose of competitive volleyball</div>
+  <div class="divider"></div>
+  <div class="event-name">{{eventName}}</div>
+  {{#if format}}<div class="format">{{format}}</div>{{/if}}
+  <div class="details">
+    {{#if date}}{{date}}<br>{{/if}}
+    {{#if location}}{{location}}{{/if}}
+  </div>
+  {{#if cta}}<div class="cta">{{cta}}</div>{{/if}}
+  {{#if url}}<div class="footer">{{url}}</div>{{/if}}
+</div>
+</body>
+</html>

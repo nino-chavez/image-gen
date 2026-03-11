@@ -83,6 +83,15 @@ image-gen templates -d ./templates
 
 Templates use `{{variable}}` for escaped values, `{{{variable}}}` for raw HTML, `{{#if}}...{{/if}}` for conditionals, and `{{#each}}...{{/each}}` for loops.
 
+### Watch Mode
+
+Auto-re-render an HTML file on every save — useful for template development.
+
+```bash
+image-gen watch slide.html -o slide.png
+image-gen watch slide.html -f webp -s 1
+```
+
 ### Batch AI Generation
 
 ```bash
@@ -238,8 +247,14 @@ image-gen/
 │       ├── progress.js     # Progress tracking
 │       └── index.js
 ├── templates/              # HTML templates
-│   └── lets-pepper/
-│       └── story-cover.html
+│   ├── lets-pepper/
+│   │   └── story-cover.html
+│   ├── signal-dispatch/
+│   │   ├── post-header.html
+│   │   └── social-card.html
+│   └── volley-rx/
+│       ├── event-poster.html
+│       └── results-card.html
 ├── tests/
 │   └── run.js              # Test suite (37 tests)
 ├── .github/workflows/

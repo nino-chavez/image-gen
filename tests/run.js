@@ -301,14 +301,15 @@ test('renderTemplate handles missing values gracefully', () => {
   assertEqual(result, 'Hello !');
 });
 
-test('listTemplates finds templates', () => {
+test('listTemplates finds all brand templates', () => {
   const templatesDir = path.join(__dirname, '..', 'templates');
   const templates = listTemplates(templatesDir);
-  assert(templates.length > 0, 'Should find at least one template');
-  assert(
-    templates.some((t) => t.name.includes('story-cover')),
-    'Should find story-cover template'
-  );
+  assert(templates.length >= 5, `Should find at least 5 templates, got ${templates.length}`);
+  assert(templates.some((t) => t.name.includes('story-cover')), 'Should find lets-pepper/story-cover');
+  assert(templates.some((t) => t.name.includes('post-header')), 'Should find signal-dispatch/post-header');
+  assert(templates.some((t) => t.name.includes('social-card')), 'Should find signal-dispatch/social-card');
+  assert(templates.some((t) => t.name.includes('event-poster')), 'Should find volley-rx/event-poster');
+  assert(templates.some((t) => t.name.includes('results-card')), 'Should find volley-rx/results-card');
 });
 
 test('renderTemplateFile renders a file', () => {
@@ -387,6 +388,7 @@ test('CLI --help exits cleanly', async () => {
   assert(output.includes('generate'), 'Should list generate command');
   assert(output.includes('render'), 'Should list render command');
   assert(output.includes('template'), 'Should list template command');
+  assert(output.includes('watch'), 'Should list watch command');
 });
 
 test('CLI styles command lists systems', async () => {

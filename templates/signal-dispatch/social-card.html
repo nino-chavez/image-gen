@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>{{title}}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #0A0A0B;
+    color: #FFFFFF;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .card {
+    width: 1200px;
+    height: 630px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 72px 80px;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 90% 10%, rgba(232,108,93,0.15) 0%, transparent 45%),
+      radial-gradient(ellipse at 10% 90%, rgba(0,206,209,0.10) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #E86C5D, #00CED1);
+  }
+  .card > * { position: relative; z-index: 1; }
+  .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 32px;
+  }
+  .brand .signal { color: #E86C5D; font-style: italic; }
+  .brand .dispatch { color: #FFFFFF; }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.1;
+    max-width: 850px;
+    margin-bottom: 20px;
+  }
+  .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: #9CA3AF;
+    letter-spacing: 0.05em;
+  }
+  .url {
+    position: absolute;
+    bottom: 40px;
+    right: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #4B5563;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">
+    <span class="signal">Signal</span> <span class="dispatch">Dispatch</span>
+  </div>
+  <div class="title">{{title}}</div>
+  <div class="tagline">{{tagline}}</div>
+  {{#if url}}<div class="url">{{url}}</div>{{/if}}
+</div>
+</body>
+</html>

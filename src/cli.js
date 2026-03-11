@@ -451,6 +451,59 @@ program
     console.log('');
   });
 
+// Watch mode — re-render HTML on file change
+program
+  .command('watch')
+  .description('Watch an HTML file and re-render on change')
+  .argument('<input>', 'HTML file to watch')
+  .option('-o, --output <path>', 'Output image path')
+  .option('-s, --scale <factor>', 'Device scale factor', '2')
+  .option('-f, --format <format>', 'Output format (png, webp, jpeg)', 'png')
+  .option('-q, --quality <quality>', 'Output quality (1-100)', '90')
+  .option('--wait <ms>', 'Extra wait for fonts/animations (ms)', '0')
+  .action(async (input, options) => {
+    const inputPath = path.resolve(input);
+    const outPath = options.output || input.replace(/\.html?$/, `.${options.format}`);
+
+    if (!fs.existsSync(inputPath)) {
+      console.error(chalk.red(`Error: ${input} does not exist`));
+      process.exit(1);
+    }
+
+    const provider = new HtmlProvider();
+    const renderOpts = {
+      deviceScaleFactor: parseFloat(options.scale),
+      waitMs: parseInt(options.wait),
+    };
+
+    async function renderOnce() {
+      try {
+        const buffer = await provider.render(inputPath, renderOpts);
+        const result = await optimizeAndSave(buffer, outPath, {
+          width: null,
+          height: null,
+          format: options.format,
+          quality: parseInt(options.quality),
+        });
+        const time = new Date().toLocaleTimeString();
+        console.log(chalk.green(`  [${time}] ${path.basename(outPath)} (${result.sizeKB}KB)`));
+      } catch (err) {
+        console.log(chalk.red(`  Error: ${err.message}`));
+      }
+    }
+
+    console.log(chalk.cyan(`\nWatching ${path.basename(input)} → ${path.basename(outPath)}\n`));
+    console.log(chalk.dim('  Press Ctrl+C to stop\n'));
+
+    await renderOnce();
+
+    fs.watch(inputPath, { persistent: true }, async (eventType) => {
+      if (eventType === 'change') {
+        await renderOnce();
+      }
+    });
+  });
+
 // Simple frontmatter extraction
 function extractFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);

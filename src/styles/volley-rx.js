@@ -78,43 +78,56 @@ CRITICAL:
         'Bold, commanding, rally-the-troops energy. "Report for your dose." Authoritative but with retro charm.',
     },
 
-    'holographic-coed': {
+    'propaganda-colorway': {
       background:
-        'Flowing holographic iridescent gradient — cool cyan (#06b6d4), aqua (#2dd4bf), teal (#14b8a6), light blue (#0891b2). Silky, liquid, premium feel.',
+        'TRANSPARENT — no background fill. All elements float on transparency for DTF cutout.',
       lineColor:
-        'White and light translucent overlays creating depth and shimmer',
+        'Format-specific accent color with cream (#FDF8F0) highlights. Line art and fills only — no background.',
       style:
-        'Abstract holographic fluid art — swirling silky iridescent texture with depth and light refraction. NOT flat gradient. Should look like holographic foil or oil-on-water.',
+        'Soviet/WPA propaganda poster illustration — bold flat shapes, limited palette, dramatic starburst composition. Atomic age rays radiate outward. CRITICAL: transparent background, design elements only, optimized for vinyl/DTF cutout contour.',
       elements:
-        'Swirling liquid gradients, light caustic reflections, subtle volleyball panel shapes emerging from the fluid texture, holographic shimmer highlights, translucent wave overlays',
+        'Volleyball at center with starburst/sunburst rays radiating outward, art deco corner accents, halftone dot textures on ray fills. Rays and elements should have clean defined edges for cut path. NO rectangular background — the ray shapes ARE the design boundary.',
       personality:
-        'Premium, modern, eye-catching. Like a holographic trading card or premium foil packaging.',
+        'Bold, commanding, collectible series. Each format gets its own color variant. Retro propaganda energy.',
     },
 
-    'holographic-kq': {
+    'apothecary-colorway': {
       background:
-        'Flowing holographic iridescent gradient — soft pink (#f9a8d4), lavender (#c084fc), peach (#fbbf24 golden), warm rose (#f472b6). Pastel but vibrant.',
+        'TRANSPARENT — no background fill. Label shape floats on transparency for DTF cutout.',
       lineColor:
-        'White and translucent warm overlays with golden shimmer accents',
+        'Dark navy (#1A1A2E) ink lines with format-specific color for dosage stripe/accent band.',
       style:
-        'Abstract holographic fluid art — swirling iridescent pastel texture with warmth and golden light. Premium silky feel, NOT flat.',
+        'Vintage pharmaceutical label/badge — ornamental border, decorative corners, halftone textures. The label shape IS the cutout boundary. Cream (#FDF8F0) fill inside the label contour only. CRITICAL: transparent outside the label shape, optimized for DTF cutout.',
       elements:
-        'Swirling pastel liquid gradients, golden light caustics, subtle volleyball panel shapes, holographic shimmer, rose and lavender wave textures',
+        'Ornamental double-line border forming a vintage label shape (rounded rectangle or shield), colored dosage stripe band across the middle, small Rx motifs, decorative corner flourishes, halftone dot textures inside label area. Clean outer edge for cut contour.',
       personality:
-        'Elegant, vibrant, premium. Kings & Queens energy — regal but playful.',
+        'Authentic vintage pharmacy packaging. The colored band indicates the "formulation" (tournament format). Collectible medicine label series.',
     },
 
-    'holographic-mens': {
+    'capsule-colorway': {
       background:
-        'Flowing holographic iridescent gradient — deep red (#dc2626), hot pink (#e11d48), magenta (#db2777), fuchsia (#c026d3), deep purple (#9333ea). Intense and dramatic.',
+        'TRANSPARENT — no background fill. Capsule shape floats on transparency for DTF cutout.',
       lineColor:
-        'White and translucent overlays with hot contrast highlights',
+        'Cream (#FDF8F0) and format-specific accent color — two-tone split.',
       style:
-        'Abstract holographic fluid art — intense swirling iridescent texture with dramatic depth. Like molten metal or lava lamp. NOT flat.',
+        'Large retro pharmaceutical capsule pill illustration — two-tone split with clean contour. The capsule shape IS the entire design and cutout boundary. Vintage illustration style with halftone shading. CRITICAL: transparent background, capsule floats alone.',
       elements:
-        'Intense swirling liquid gradients, deep red-to-purple light caustics, subtle volleyball panel shapes, dramatic holographic shimmer, magenta wave textures',
+        'Large two-tone capsule pill shape (horizontal or angled), split down the center — one half format color, other half cream. Subtle Rx cross etched into the colored half. Fine halftone dot shading for dimension. Vintage pharmaceutical illustration quality. Clean smooth outer capsule edge for DTF cut path.',
       personality:
-        'Intense, powerful, premium. Raw competitive energy. Dramatic and bold.',
+        'The pill IS the graphic. Bold, iconic, immediately recognizable. Retro pharmaceutical illustration — the dose for your format.',
+    },
+
+    'seal-colorway': {
+      background:
+        'TRANSPARENT — no background fill. Seal/crest floats on transparency for DTF cutout.',
+      lineColor:
+        'Format-specific color replacing gold — metallic gradient feel within that hue. Cream (#FDF8F0) accent details.',
+      style:
+        'Art deco symmetrical crest/emblem — ornamental frame, geometric patterns, vintage seal. Rendered in format color instead of gold. CRITICAL: transparent background, the ornamental outline IS the cutout boundary. Optimized for DTF contour cut.',
+      elements:
+        'Symmetrical ornamental crest frame with art deco geometric patterns (chevrons, fan shapes, thin radiating lines), volleyball at center, decorative laurel/wheat flourishes flanking sides, starburst accent points. All rendered in format color with cream details. Clean ornamental outer edge for cut path.',
+      personality:
+        'Prestigious format badge. Like a vintage pharmacy seal stamped in your format color. Collectible, earned, display-worthy.',
     },
 
     ornamental: {
@@ -225,13 +238,15 @@ CRITICAL:
     banner: 'ribbon banner shape, championship or award style',
 
     // === EVENT COLORWAYS ===
-    coed: 'cool cyan, aqua, teal holographic gradient (#06b6d4 to #14b8a6)',
+    coed: 'cool teal/cyan format color (#06b6d4, #14b8a6, #1B4D4F) — clean, balanced energy',
     'kings and queens':
-      'pastel pink, lavender, golden holographic gradient (#f9a8d4 to #fbbf24)',
-    kq: 'pastel pink, lavender, golden holographic gradient (#f9a8d4 to #fbbf24)',
-    mens: 'intense red, magenta, fuchsia holographic gradient (#dc2626 to #9333ea)',
-    holographic:
-      'iridescent fluid texture, light refraction, premium foil feel',
+      'warm rose/pink/gold format color (#f9a8d4, #f472b6, #fbbf24) — regal, elegant',
+    kq: 'warm rose/pink/gold format color (#f9a8d4, #f472b6, #fbbf24) — regal, elegant',
+    mens: 'deep red/crimson format color (#dc2626, #C4453A, #e11d48) — intense, competitive',
+    colorway:
+      'format-specific color variant, same design structure with different accent color per tournament format',
+    'dtf cutout':
+      'transparent background, clean contour edges, design floats — no wasted fill area. Optimize for DTF vinyl cut path.',
 
     // === MERCH CONTEXTS ===
     'front print': 'center chest composition, 10-12 inch wide, vertical format',

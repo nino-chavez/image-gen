@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>{{eventName}} Results</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1080px;
+    background: #0a0a0a;
+    color: #FDF8F0;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .card {
+    width: 1080px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    padding: 72px;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border: 1px solid rgba(196,146,58,0.25);
+    pointer-events: none;
+  }
+  .card > * { position: relative; z-index: 1; }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 48px;
+  }
+  .header-left .rx {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: #C4923A;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .header-left .event {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 48px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .header-right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #6B7280;
+    text-align: right;
+  }
+  .results-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #C4923A;
+    margin-bottom: 24px;
+  }
+  .podium {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .place {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+    background: rgba(253,248,240,0.03);
+    border-left: 3px solid transparent;
+  }
+  .place.gold { border-left-color: #C4923A; }
+  .place.silver { border-left-color: #9CA3AF; }
+  .place.bronze { border-left-color: #92400E; }
+  .place .rank {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 36px;
+    min-width: 48px;
+    text-align: center;
+  }
+  .place.gold .rank { color: #C4923A; }
+  .place.silver .rank { color: #9CA3AF; }
+  .place.bronze .rank { color: #92400E; }
+  .place .team {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    flex: 1;
+  }
+  .place .record {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: #6B7280;
+  }
+  .footer {
+    margin-top: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #4B5563;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="header-left">
+      <div class="rx">Rx</div>
+      <div class="event">{{eventName}}</div>
+    </div>
+    <div class="header-right">
+      {{#if format}}{{format}}<br>{{/if}}
+      {{#if date}}{{date}}{{/if}}
+    </div>
+  </div>
+  <div class="results-label">Final Standings</div>
+  <div class="podium">
+    {{#each results}}
+    <div class="place {{medal}}">
+      <div class="rank">{{rank}}</div>
+      <div class="team">{{team}}</div>
+      {{#if record}}<div class="record">{{record}}</div>{{/if}}
+    </div>
+    {{/each}}
+  </div>
+  {{#if url}}<div class="footer">{{url}}</div>{{/if}}
+</div>
+</body>
+</html>
