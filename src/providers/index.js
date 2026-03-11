@@ -4,9 +4,11 @@
  */
 
 import { OpenRouterProvider, AVAILABLE_MODELS } from './openrouter.js';
+import { HtmlProvider } from './html.js';
 
 const PROVIDERS = {
   openrouter: OpenRouterProvider,
+  html: HtmlProvider,
 };
 
 /**
@@ -43,4 +45,4 @@ export async function getBestProvider(config = {}) {
   return null;
 }
 
-export { OpenRouterProvider, AVAILABLE_MODELS };
+export { OpenRouterProvider, HtmlProvider, AVAILABLE_MODELS };

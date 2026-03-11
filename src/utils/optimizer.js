@@ -40,8 +40,8 @@ export async function optimizeBuffer(inputBuffer, options = {}) {
 
   let pipeline = sharp(inputBuffer);
 
-  // Resize
-  if (opts.width || opts.height) {
+  // Resize (skip if explicitly set to null)
+  if (opts.width !== null && opts.height !== null && (opts.width || opts.height)) {
     pipeline = pipeline.resize(opts.width, opts.height, {
       fit: opts.fit,
       position: opts.position,
@@ -94,8 +94,8 @@ export async function optimizeAndSave(inputBuffer, outputPath, options = {}) {
 
   let pipeline = sharp(inputBuffer);
 
-  // Resize
-  if (opts.width || opts.height) {
+  // Resize (skip if explicitly set to null)
+  if (opts.width !== null && opts.height !== null && (opts.width || opts.height)) {
     pipeline = pipeline.resize(opts.width, opts.height, {
       fit: opts.fit,
       position: opts.position,

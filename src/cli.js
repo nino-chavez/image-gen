@@ -12,6 +12,8 @@ import path from 'path';
 import { createGenerator } from './generator.js';
 import { listStyleSystems, getStyleSystem } from './styles/index.js';
 import { AVAILABLE_MODELS } from './providers/index.js';
+import { HtmlProvider } from './providers/html.js';
+import { optimizeAndSave } from './utils/optimizer.js';
 
 // Load .env if present
 import dotenv from 'dotenv';
@@ -248,6 +250,126 @@ program
       console.log(chalk.dim(`    ${fullName}`));
     }
     console.log('');
+  });
+
+// HTML-to-PNG rendering
+program
+  .command('render')
+  .description('Render HTML files to images')
+  .argument('[input]', 'HTML file or directory of HTML files')
+  .option('-o, --output <path>', 'Output file or directory')
+  .option('-p, --pattern <glob>', 'File pattern for directory mode', '*.html')
+  .option('-w, --width <width>', 'Override viewport width')
+  .option('--height <height>', 'Override viewport height')
+  .option('-s, --scale <factor>', 'Device scale factor (pixel density)', '2')
+  .option('-f, --format <format>', 'Output format (png, webp, jpeg)', 'png')
+  .option('-q, --quality <quality>', 'Output quality for lossy formats (1-100)', '90')
+  .option('--wait <ms>', 'Extra wait time after page load (ms)', '0')
+  .option('--no-optimize', 'Skip sharp optimization, output raw screenshot')
+  .action(async (input, options) => {
+    if (!input) {
+      console.error(chalk.red('Error: input file or directory is required'));
+      process.exit(1);
+    }
+
+    const inputPath = path.resolve(input);
+    const stat = fs.statSync(inputPath, { throwIfNoEntry: false });
+
+    if (!stat) {
+      console.error(chalk.red(`Error: ${input} does not exist`));
+      process.exit(1);
+    }
+
+    const provider = new HtmlProvider({
+      width: options.width ? parseInt(options.width) : undefined,
+      height: options.height ? parseInt(options.height) : undefined,
+    });
+
+    const renderOpts = {
+      width: options.width ? parseInt(options.width) : undefined,
+      height: options.height ? parseInt(options.height) : undefined,
+      deviceScaleFactor: parseFloat(options.scale),
+      waitMs: parseInt(options.wait),
+    };
+
+    try {
+      if (stat.isFile()) {
+        // Single file mode
+        const spinner = ora('Rendering...').start();
+        const outPath = options.output || input.replace(/\.html?$/, `.${options.format}`);
+        const buffer = await provider.render(inputPath, renderOpts);
+
+        if (options.optimize !== false) {
+          const result = await optimizeAndSave(buffer, outPath, {
+            width: null,
+            height: null,
+            format: options.format,
+            quality: parseInt(options.quality),
+          });
+          spinner.succeed(chalk.green(`Rendered: ${outPath} (${result.sizeKB}KB)`));
+        } else {
+          fs.mkdirSync(path.dirname(path.resolve(outPath)), { recursive: true });
+          fs.writeFileSync(outPath, buffer);
+          spinner.succeed(chalk.green(`Rendered: ${outPath} (${Math.round(buffer.length / 1024)}KB)`));
+        }
+      } else if (stat.isDirectory()) {
+        // Batch directory mode
+        const files = fs.readdirSync(inputPath).filter((f) => {
+          if (options.pattern === '*.html') return f.endsWith('.html');
+          return f.match(new RegExp(options.pattern.replace('*', '.*')));
+        });
+
+        if (files.length === 0) {
+          console.log(chalk.yellow('No matching HTML files found.'));
+          process.exit(0);
+        }
+
+        const outDir = options.output || inputPath;
+        if (!fs.existsSync(outDir)) {
+          fs.mkdirSync(outDir, { recursive: true });
+        }
+
+        console.log(chalk.cyan(`\nRendering ${files.length} HTML files...\n`));
+
+        let success = 0;
+        let failed = 0;
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const filePath = path.join(inputPath, file);
+          const outName = file.replace(/\.html?$/, `.${options.format}`);
+          const outPath = path.join(outDir, outName);
+
+          try {
+            const buffer = await provider.render(filePath, renderOpts);
+
+            if (options.optimize !== false) {
+              const result = await optimizeAndSave(buffer, outPath, {
+                width: null,
+                height: null,
+                format: options.format,
+                quality: parseInt(options.quality),
+              });
+              console.log(chalk.green(`  [${i + 1}/${files.length}] ${outName} (${result.sizeKB}KB)`));
+            } else {
+              fs.writeFileSync(outPath, buffer);
+              console.log(chalk.green(`  [${i + 1}/${files.length}] ${outName} (${Math.round(buffer.length / 1024)}KB)`));
+            }
+            success++;
+          } catch (err) {
+            console.log(chalk.red(`  [${i + 1}/${files.length}] ${file} — ${err.message}`));
+            failed++;
+          }
+        }
+
+        console.log(chalk.cyan(`\nDone: ${success} rendered, ${failed} failed\n`));
+      }
+    } catch (error) {
+      console.error(chalk.red(`Error: ${error.message}`));
+      process.exit(1);
+    } finally {
+      await provider.close();
+    }
   });
 
 // Simple frontmatter extraction
