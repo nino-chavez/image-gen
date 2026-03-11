@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 3 — #5 Haynes / Mensching / Veldman</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-jalapeno: #f97316;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 64px;
+    position: relative;
+  }
+  .rank-number {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 320px;
+    color: var(--heat-jalapeno);
+    line-height: 1;
+    opacity: 0.12;
+    position: absolute;
+    top: 120px;
+    right: 60px;
+  }
+  .rank-badge {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--heat-jalapeno);
+    padding: 12px 36px;
+    border: 2px solid rgba(249,115,22,0.3);
+    border-radius: 100px;
+    margin-bottom: 56px;
+  }
+  .trend-arrow { font-size: 32px; color: #4ade80; }
+  .rank-card {
+    width: 100%;
+    max-width: 920px;
+    padding: 64px 72px;
+    border-radius: 28px;
+    border: 1px solid rgba(249,115,22,0.2);
+    background: var(--pepper-charcoal);
+    position: relative;
+    overflow: hidden;
+  }
+  .rank-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    background: var(--heat-jalapeno);
+    box-shadow: 0 0 24px var(--heat-jalapeno);
+  }
+  .team-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 72px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--text-primary);
+    margin-bottom: 32px;
+    letter-spacing: 0.02em;
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+  .scoville-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .meta-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .scoville-bars { display: flex; gap: 10px; }
+  .scoville-pip {
+    width: 56px;
+    height: 14px;
+    border-radius: 7px;
+    background: var(--border-subtle);
+  }
+  .scoville-pip.active {
+    background: var(--heat-jalapeno);
+    box-shadow: 0 0 10px rgba(249,115,22,0.5);
+  }
+  .trend-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: #4ade80;
+  }
+  .blurb {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+  }
+  .highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .highlight-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--heat-jalapeno);
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: 1px solid rgba(249,115,22,0.25);
+    background: rgba(249,115,22,0.06);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="rank-number">#5</div>
+  <div class="rank-badge">#5 — Jalapeño Heat <span class="trend-arrow">↑</span></div>
+  <div class="rank-card">
+    <div class="team-name">Haynes / Mensching / Veldman</div>
+    <div class="meta-row">
+      <div class="scoville-group">
+        <div class="meta-label">Scoville</div>
+        <div class="scoville-bars">
+          <div class="scoville-pip active"></div>
+          <div class="scoville-pip active"></div>
+          <div class="scoville-pip active"></div>
+          <div class="scoville-pip"></div>
+          <div class="scoville-pip"></div>
+        </div>
+      </div>
+      <div class="trend-value">↑ Rising</div>
+    </div>
+    <div class="blurb">9th to 2nd. The biggest glow-up of the season.</div>
+    <div class="highlights">
+      <div class="highlight-tag">Grass Launch Silver</div>
+      <div class="highlight-tag">Biggest improvement</div>
+      <div class="highlight-tag">85 pts each</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

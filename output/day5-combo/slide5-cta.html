@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 5 — CTA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-bell: #4ade80;
+    --heat-jalapeno: #f97316;
+    --heat-habanero: #ef4444;
+    --gold: #F5B91A;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 60px 200px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(249,115,22,0.06) 0%, transparent 50%),
+      var(--pepper-black);
+  }
+  .emoji { font-size: 80px; margin-bottom: 40px; }
+  .headline {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 88px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 28px;
+  }
+  .headline .white { color: var(--text-primary); }
+  .headline .accent { color: var(--heat-jalapeno); }
+  .subtitle {
+    font-size: 32px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 700px;
+    margin-bottom: 56px;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 640px;
+    margin-bottom: 48px;
+  }
+  .link-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 32px;
+    border-radius: 16px;
+    border: 1px solid var(--border-subtle);
+    background: var(--pepper-charcoal);
+  }
+  .link-icon { font-size: 36px; flex-shrink: 0; }
+  .link-info { text-align: left; flex: 1; }
+  .link-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .link-url {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    color: var(--text-muted);
+  }
+  .link-row:nth-child(1) .link-name { color: var(--heat-bell); }
+  .link-row:nth-child(2) .link-name { color: var(--heat-jalapeno); }
+  .link-row:nth-child(3) .link-name { color: var(--heat-habanero); }
+  .arrow-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="emoji">🌶️</div>
+  <div class="headline">
+    <span class="white">All Live on</span><br>
+    <span class="accent">the Site</span>
+  </div>
+  <div class="subtitle">Three ways to get in on game day. Pick your play.</div>
+
+  <div class="links">
+    <div class="link-row">
+      <div class="link-icon">🎯</div>
+      <div class="link-info">
+        <div class="link-name">Pepper Bingo</div>
+        <div class="link-url">letspepper.com/bingo</div>
+      </div>
+    </div>
+    <div class="link-row">
+      <div class="link-icon">🔮</div>
+      <div class="link-info">
+        <div class="link-name">Pepper Props</div>
+        <div class="link-url">letspepper.com/predictions</div>
+      </div>
+    </div>
+    <div class="link-row">
+      <div class="link-icon">📸</div>
+      <div class="link-info">
+        <div class="link-name">Photo of the Season</div>
+        <div class="link-url">letspepper.com/photo-vote</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-hint">↑ Link in bio</div>
+</div>
+</body>
+</html>

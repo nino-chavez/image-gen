@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 5 — Photo of the Season</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-habanero: #ef4444;
+    --heat-poblano: #facc15;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 60px 200px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(239,68,68,0.05) 0%, transparent 50%),
+      var(--pepper-black);
+  }
+  .icon { font-size: 64px; margin-bottom: 16px; }
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--heat-habanero);
+    margin-bottom: 8px;
+  }
+  .title {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 84px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+  .desc {
+    font-size: 30px;
+    color: var(--text-muted);
+    margin-bottom: 56px;
+    line-height: 1.5;
+    max-width: 720px;
+  }
+  /* Photo grid mockup */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 48px;
+  }
+  .photo-cell {
+    aspect-ratio: 4/3;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo-cell .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    border: 1px solid var(--border-subtle);
+  }
+  .photo-cell:nth-child(1) .overlay { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+  .photo-cell:nth-child(2) .overlay { background: linear-gradient(135deg, #1a1a1a, #2d1b00); }
+  .photo-cell:nth-child(3) .overlay { background: linear-gradient(135deg, #0d1b0e, #1a1a1a); }
+  .photo-cell:nth-child(4) .overlay { background: linear-gradient(135deg, #2d1b00, #1a1a1a); }
+  .photo-cell:nth-child(5) .overlay { background: linear-gradient(135deg, #1a1a1a, #1a0d0d); }
+  .photo-cell:nth-child(6) .overlay { background: linear-gradient(135deg, #0d1b0e, #16213e); }
+  .photo-emoji {
+    font-size: 48px;
+    margin-bottom: 8px;
+  }
+  .photo-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .collab {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .collab-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--text-secondary);
+  }
+  .collab-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--heat-habanero);
+  }
+  .cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    color: var(--heat-habanero);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="icon">📸</div>
+  <div class="label">Photo Vote</div>
+  <div class="title">Photo of<br>the Season</div>
+  <div class="desc">The best shots from the tournament. You pick the winner.</div>
+
+  <div class="photo-grid">
+    <div class="photo-cell"><div class="overlay"><div class="photo-emoji">🏐</div><div class="photo-label">The Dive</div></div></div>
+    <div class="photo-cell"><div class="overlay"><div class="photo-emoji">🔥</div><div class="photo-label">The Kill</div></div></div>
+    <div class="photo-cell"><div class="overlay"><div class="photo-emoji">🎉</div><div class="photo-label">The Celebration</div></div></div>
+    <div class="photo-cell"><div class="overlay"><div class="photo-emoji">🌅</div><div class="photo-label">Golden Hour</div></div></div>
+    <div class="photo-cell"><div class="overlay"><div class="photo-emoji">💪</div><div class="photo-label">The Moment</div></div></div>
+    <div class="photo-cell"><div class="overlay"><div class="photo-emoji">📷</div><div class="photo-label">The Candid</div></div></div>
+  </div>
+
+  <div class="collab">
+    <div class="collab-text">Powered by</div>
+    <div class="collab-tag">@flickday.media</div>
+  </div>
+
+  <div class="cta">letspepper.com/photo-vote</div>
+</div>
+</body>
+</html>

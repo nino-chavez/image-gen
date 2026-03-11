@@ -105,13 +105,29 @@ export class OpenRouterProvider extends BaseImageProvider {
       throw new Error('OpenRouter API key not configured');
     }
 
+    // Build content array (supports text-only or text+image reference)
+    let content;
+    if (options.referenceImage) {
+      const fs = await import('fs');
+      const imageBuffer = fs.readFileSync(options.referenceImage);
+      const base64 = imageBuffer.toString('base64');
+      const ext = options.referenceImage.split('.').pop().toLowerCase();
+      const mimeType = ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
+      content = [
+        { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } },
+        { type: 'text', text: prompt },
+      ];
+    } else {
+      content = prompt;
+    }
+
     const response = await this.client.chat.completions.create({
       model: this.model,
       modalities: ['text', 'image'],
       messages: [
         {
           role: 'user',
-          content: prompt,
+          content,
         },
       ],
     });

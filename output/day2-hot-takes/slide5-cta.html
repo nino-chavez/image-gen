@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 2 — CTA: Drop Your Take</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-jalapeno: #f97316;
+    --heat-habanero: #ef4444;
+    --heat-reaper: #dc2626;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 72px;
+    position: relative;
+  }
+
+  /* Gradient border */
+  .story::before {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border-radius: 32px;
+    border: 3px solid transparent;
+    background: linear-gradient(var(--pepper-black), var(--pepper-black)) padding-box,
+                linear-gradient(180deg, var(--heat-jalapeno), var(--heat-reaper)) border-box;
+    pointer-events: none;
+  }
+
+  .story > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .fire-emoji {
+    font-size: 96px;
+    margin-bottom: 48px;
+  }
+
+  .headline {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 100px;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+
+  .headline .got { color: var(--text-primary); }
+  .headline .take { color: var(--heat-jalapeno); }
+
+  .subtext {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 700px;
+    margin-bottom: 64px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 56px;
+    border-radius: 100px;
+    border: 2px solid var(--heat-jalapeno);
+    background: rgba(249,115,22,0.1);
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    color: var(--heat-jalapeno);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .url {
+    font-family: 'Space Mono', monospace;
+    font-size: 26px;
+    color: var(--heat-jalapeno);
+    margin-top: 48px;
+    letter-spacing: 0.05em;
+  }
+
+  .arrow-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    color: var(--text-muted);
+    margin-top: 32px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="fire-emoji">🔥</div>
+  <div class="headline">
+    <span class="got">Got a</span><br>
+    <span class="take">Hot Take?</span>
+  </div>
+  <div class="subtext">Drop yours on the site. Anonymous. Unfiltered. Let the community vote.</div>
+  <div class="cta-btn">🌶️ Submit Your Take</div>
+  <div class="url">letspepper.com/hot-takes</div>
+  <div class="arrow-hint">↑ Link in bio</div>
+</div>
+
+</body>
+</html>

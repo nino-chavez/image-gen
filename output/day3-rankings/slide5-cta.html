@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 3 — CTA: Full Rankings</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-bell: #4ade80;
+    --heat-poblano: #facc15;
+    --heat-jalapeno: #f97316;
+    --heat-habanero: #ef4444;
+    --heat-reaper: #dc2626;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 64px;
+    position: relative;
+  }
+  .story > * { position: relative; z-index: 1; }
+  .story::before {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border-radius: 32px;
+    border: 3px solid transparent;
+    background: linear-gradient(var(--pepper-black), var(--pepper-black)) padding-box,
+                linear-gradient(180deg, var(--heat-bell), var(--heat-poblano), var(--heat-jalapeno), var(--heat-habanero), var(--heat-reaper)) border-box;
+    pointer-events: none;
+  }
+  .rank-list {
+    width: 100%;
+    max-width: 820px;
+    margin-bottom: 64px;
+  }
+  .rank-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .rank-pos {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 44px;
+    color: var(--text-muted);
+    min-width: 56px;
+    text-align: right;
+  }
+  .rank-name {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: left;
+  }
+  .rank-heat { display: flex; gap: 6px; }
+  .mini-pip {
+    width: 32px;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--border-subtle);
+  }
+  .rank-row:nth-child(1) .mini-pip.active { background: var(--heat-reaper); }
+  .rank-row:nth-child(2) .mini-pip.active { background: var(--heat-habanero); }
+  .rank-row:nth-child(3) .mini-pip.active { background: var(--heat-jalapeno); }
+  .rank-row:nth-child(4) .mini-pip.active { background: var(--heat-jalapeno); }
+  .rank-row:nth-child(5) .mini-pip.active { background: var(--heat-jalapeno); }
+  .rank-row:nth-child(6) .mini-pip.active { background: var(--heat-jalapeno); }
+  .rank-row:nth-child(7) .mini-pip.active { background: var(--heat-poblano); }
+  .rank-row:nth-child(8) .mini-pip.active { background: var(--heat-poblano); }
+  .cta-text {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.4;
+    max-width: 700px;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 24px 56px;
+    border-radius: 100px;
+    border: 2px solid var(--heat-jalapeno);
+    background: rgba(249,115,22,0.1);
+    font-family: 'Space Mono', monospace;
+    font-size: 30px;
+    color: var(--heat-jalapeno);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 36px;
+  }
+  .url {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    color: var(--heat-jalapeno);
+    letter-spacing: 0.04em;
+  }
+  .arrow-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--text-muted);
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="rank-list">
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#1</div><div class="rank-name">Podgorny / Meyer</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#2</div><div class="rank-name">Maruyama / Solomon / Geist</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip"></div></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#3</div><div class="rank-name">Maas / Zediker / Sauer</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip"></div><div class="mini-pip"></div></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#4</div><div class="rank-name">Peter Zurawski</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip"></div><div class="mini-pip"></div></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#5</div><div class="rank-name">Haynes / Mensching / Veldman</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip"></div><div class="mini-pip"></div></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#6</div><div class="rank-name">Ian Schuller</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip"></div><div class="mini-pip"></div></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#7</div><div class="rank-name">Messer / Mir / Adler</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip"></div><div class="mini-pip"></div><div class="mini-pip"></div></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-left"><div class="rank-pos">#8</div><div class="rank-name">Butler / Scott / Randle</div></div>
+      <div class="rank-heat"><div class="mini-pip active"></div><div class="mini-pip active"></div><div class="mini-pip"></div><div class="mini-pip"></div><div class="mini-pip"></div></div>
+    </div>
+  </div>
+  <div class="cta-text">Full rankings + head-to-head comparisons on the site.</div>
+  <div class="cta-btn">📊 View Full Rankings</div>
+  <div class="url">letspepper.com/rankings</div>
+  <div class="arrow-hint">↑ Link in bio</div>
+</div>
+
+</body>
+</html>

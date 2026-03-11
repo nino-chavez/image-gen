@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 5 — Game Day Upgrade</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-bell: #4ade80;
+    --heat-jalapeno: #f97316;
+    --heat-habanero: #ef4444;
+    --heat-reaper: #dc2626;
+    --heat-poblano: #facc15;
+    --gold: #F5B91A;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 60px 200px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(249,115,22,0.05) 0%, transparent 40%),
+      radial-gradient(ellipse at 70% 60%, rgba(74,222,128,0.04) 0%, transparent 40%),
+      radial-gradient(ellipse at 50% 80%, rgba(220,38,38,0.04) 0%, transparent 40%),
+      var(--pepper-black);
+  }
+  .emoji-row {
+    font-size: 72px;
+    margin-bottom: 48px;
+    display: flex;
+    gap: 32px;
+  }
+  .headline {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 96px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 32px;
+  }
+  .headline .white { color: var(--text-primary); }
+  .headline .accent { color: var(--heat-jalapeno); }
+  .subtitle {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 34px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 720px;
+    margin-bottom: 64px;
+  }
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 740px;
+  }
+  .feature-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 36px;
+    border-radius: 20px;
+    background: var(--pepper-charcoal);
+    border: 1px solid var(--border-subtle);
+  }
+  .feature-icon {
+    font-size: 48px;
+    flex-shrink: 0;
+  }
+  .feature-info {
+    text-align: left;
+  }
+  .feature-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 44px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .feature-desc {
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    color: var(--text-muted);
+  }
+  .feature-row:nth-child(1) { border-left: 4px solid var(--heat-bell); }
+  .feature-row:nth-child(2) { border-left: 4px solid var(--heat-jalapeno); }
+  .feature-row:nth-child(3) { border-left: 4px solid var(--heat-habanero); }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="emoji-row">
+    <span>🎯</span><span>🔮</span><span>📸</span>
+  </div>
+  <div class="headline">
+    <span class="white">Game Day Just</span><br>
+    <span class="accent">Got an Upgrade</span>
+  </div>
+  <div class="subtitle">Three new features. All live on the site.</div>
+
+  <div class="features">
+    <div class="feature-row">
+      <div class="feature-icon">🎯</div>
+      <div class="feature-info">
+        <div class="feature-name">Pepper Bingo</div>
+        <div class="feature-desc">44 squares. 5 in a row wins.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-icon">🔮</div>
+      <div class="feature-info">
+        <div class="feature-name">Pepper Props</div>
+        <div class="feature-desc">15 predictions. 32 pts possible.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-icon">📸</div>
+      <div class="feature-info">
+        <div class="feature-name">Photo of the Season</div>
+        <div class="feature-desc">Vote for the best @flickday shot.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 2 — Take: Podgorny &amp; Meyer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-habanero: #ef4444;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 72px;
+    position: relative;
+  }
+
+  .heat-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--heat-habanero);
+    padding: 8px 24px;
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 100px;
+    margin-bottom: 48px;
+  }
+
+  .take-card {
+    width: 100%;
+    max-width: 880px;
+    padding: 64px;
+    border-radius: 24px;
+    border: 1px solid rgba(239,68,68,0.2);
+    background: var(--pepper-charcoal);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .take-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: var(--heat-habanero);
+    box-shadow: 0 0 20px var(--heat-habanero);
+  }
+
+  .take-text {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--text-primary);
+    margin-bottom: 32px;
+  }
+
+  .take-author {
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .take-author::before {
+    content: '— ';
+  }
+
+  .reaction-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .fire-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 100px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(239,68,68,0.08);
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    color: var(--heat-habanero);
+  }
+
+  .heat-meter {
+    display: flex;
+    gap: 6px;
+    margin-top: 48px;
+  }
+  .heat-pip {
+    width: 48px;
+    height: 6px;
+    border-radius: 3px;
+    background: #27272a;
+  }
+  .heat-pip.active {
+    background: var(--heat-habanero);
+    box-shadow: 0 0 8px var(--heat-habanero);
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="heat-badge">🔥 Very Hot</div>
+
+  <div class="take-card">
+    <div class="take-text">Podgorny and Meyer aren't just the best duo — they might be the best team in Illinois grass volleyball. Period.</div>
+    <div class="take-author">Anonymous</div>
+    <div class="reaction-row">
+      <div class="fire-btn">🔥 98</div>
+    </div>
+  </div>
+
+  <div class="heat-meter">
+    <div class="heat-pip active"></div>
+    <div class="heat-pip active"></div>
+    <div class="heat-pip active"></div>
+    <div class="heat-pip active"></div>
+    <div class="heat-pip"></div>
+  </div>
+</div>
+
+</body>
+</html>

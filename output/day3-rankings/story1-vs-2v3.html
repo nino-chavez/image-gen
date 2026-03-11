@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 3 Story — #2 vs #3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --pepper-dark: #141414;
+    --heat-jalapeno: #f97316;
+    --heat-habanero: #ef4444;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 64px;
+  }
+  .header-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+    margin-bottom: 56px;
+  }
+  .vs-container {
+    width: 100%;
+    max-width: 920px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .team-card {
+    width: 100%;
+    padding: 52px 56px;
+    border-radius: 28px;
+    background: var(--pepper-charcoal);
+    border: 1px solid var(--border-subtle);
+    position: relative;
+    overflow: hidden;
+  }
+  .team-card.top::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    background: var(--heat-habanero);
+    box-shadow: 0 0 20px var(--heat-habanero);
+  }
+  .team-card.bottom::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    background: var(--heat-jalapeno);
+    box-shadow: 0 0 20px var(--heat-jalapeno);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .rank-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 8px 20px;
+    border-radius: 100px;
+  }
+  .rank-tag.top {
+    color: var(--heat-habanero);
+    border: 1px solid rgba(239,68,68,0.3);
+    background: rgba(239,68,68,0.06);
+  }
+  .rank-tag.bottom {
+    color: var(--heat-jalapeno);
+    border: 1px solid rgba(249,115,22,0.3);
+    background: rgba(249,115,22,0.06);
+  }
+  .scoville-mini { display: flex; gap: 8px; }
+  .s-pip {
+    width: 40px;
+    height: 12px;
+    border-radius: 6px;
+    background: var(--border-subtle);
+  }
+  .team-card.top .s-pip.active { background: var(--heat-habanero); }
+  .team-card.bottom .s-pip.active { background: var(--heat-jalapeno); }
+  .team-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 64px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+  .team-stat {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 30px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+  .vs-badge {
+    align-self: center;
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 96px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .quiz-prompt {
+    margin-top: 56px;
+    padding: 24px 56px;
+    border-radius: 100px;
+    border: 2px solid var(--border-subtle);
+    background: var(--pepper-dark);
+    font-family: 'Space Mono', monospace;
+    font-size: 34px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .quiz-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    color: var(--text-muted);
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="header-label">This or That</div>
+  <div class="vs-container">
+    <div class="team-card top">
+      <div class="card-header">
+        <div class="rank-tag top">#2</div>
+        <div class="scoville-mini">
+          <div class="s-pip active"></div><div class="s-pip active"></div><div class="s-pip active"></div><div class="s-pip active"></div><div class="s-pip"></div>
+        </div>
+      </div>
+      <div class="team-name">Maruyama / Solomon / Geist</div>
+      <div class="team-stat">Silver + Bronze finishes. Always in the mix.</div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="team-card bottom">
+      <div class="card-header">
+        <div class="rank-tag bottom">#3</div>
+        <div class="scoville-mini">
+          <div class="s-pip active"></div><div class="s-pip active"></div><div class="s-pip active"></div><div class="s-pip"></div><div class="s-pip"></div>
+        </div>
+      </div>
+      <div class="team-name">Maas / Zediker / Sauer</div>
+      <div class="team-stat">2x Bronze. Same roster both events. Dialed in.</div>
+    </div>
+  </div>
+  <div class="quiz-prompt">Who's better?</div>
+  <div class="quiz-hint">Add quiz sticker here</div>
+</div>
+
+</body>
+</html>

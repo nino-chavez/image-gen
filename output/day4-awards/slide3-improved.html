@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 4 — Jalapeño Award: Most Improved</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --heat-jalapeno: #f97316;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 140px 60px 200px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(249,115,22,0.06) 0%, transparent 50%),
+      var(--pepper-black);
+  }
+  .pepper-icon { font-size: 64px; margin-bottom: 16px; }
+  .award-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--heat-jalapeno);
+    margin-bottom: 12px;
+  }
+  .award-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 100px;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .award-desc {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 32px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 720px;
+  }
+  .nominees-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    align-self: flex-start;
+    margin-left: 80px;
+  }
+  .nominees {
+    width: 100%;
+    max-width: 920px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .nominee {
+    width: 100%;
+    padding: 22px 36px;
+    border-radius: 20px;
+    background: var(--pepper-charcoal);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nominee-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 52px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+  }
+  .nominee-reason {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    color: var(--text-muted);
+    text-align: right;
+    max-width: 380px;
+    line-height: 1.4;
+  }
+  .team-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    color: var(--heat-jalapeno);
+    margin-top: 24px;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  /* Instagram Quiz Sticker */
+  .ig-quiz {
+    margin-top: 28px;
+    width: 100%;
+    max-width: 680px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .ig-quiz-header {
+    background: linear-gradient(135deg, #833AB4, #C13584, #E1306C, #F77737);
+    padding: 28px 36px;
+    text-align: center;
+  }
+  .ig-quiz-question {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .ig-quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+  }
+  .ig-quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 24px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.95);
+  }
+  .ig-quiz-letter {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .ig-quiz-option:nth-child(1) .ig-quiz-letter { background: #E1306C; }
+  .ig-quiz-option:nth-child(2) .ig-quiz-letter { background: #833AB4; }
+  .ig-quiz-option:nth-child(3) .ig-quiz-letter { background: #25D366; }
+  .ig-quiz-text {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="pepper-icon">🌶️</div>
+  <div class="award-label">Jalapeño Award</div>
+  <div class="award-name">Most Improved</div>
+  <div class="award-desc">The player or team that leveled up the most between events.</div>
+
+  <div class="nominees-label">Nominees</div>
+  <div class="nominees">
+    <div class="nominee">
+      <div class="nominee-name">Everett Haynes</div>
+      <div class="nominee-reason">9th → 2nd place</div>
+    </div>
+    <div class="nominee">
+      <div class="nominee-name">Will Mensching</div>
+      <div class="nominee-reason">9th → 2nd place</div>
+    </div>
+    <div class="nominee">
+      <div class="nominee-name">Grant Veldman</div>
+      <div class="nominee-reason">9th → 2nd place</div>
+    </div>
+  </div>
+  <div class="team-note">All three from the same squad — the biggest glow-up of the season</div>
+
+
+</div>
+
+</body>
+</html>

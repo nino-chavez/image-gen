@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<script>document.documentElement.style.zoom=Math.min(window.innerWidth/1080,window.innerHeight/1920);document.documentElement.style.background="#0a0a0a";</script>
+<title>Day 4 — CTA: Vote Now</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pepper-black: #0a0a0a;
+    --pepper-charcoal: #1a1a1a;
+    --gold: #F5B91A;
+    --heat-bell: #4ade80;
+    --heat-jalapeno: #f97316;
+    --heat-habanero: #ef4444;
+    --heat-poblano: #facc15;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-subtle: #27272a;
+  }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--pepper-black);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .story {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 200px 60px 300px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(245,185,26,0.07) 0%, transparent 50%),
+      var(--pepper-black);
+  }
+  .trophy { font-size: 100px; margin-bottom: 48px; }
+  .headline {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 100px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 40px;
+  }
+  .headline .cast { color: var(--text-primary); }
+  .headline .vote { color: var(--gold); }
+  .subtitle {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 36px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 720px;
+    margin-bottom: 56px;
+  }
+  .categories-recap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 56px;
+    width: 100%;
+    max-width: 700px;
+  }
+  .cat-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 26px;
+  }
+  .cat-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cat-row:nth-child(1) .cat-dot { background: var(--heat-habanero); }
+  .cat-row:nth-child(1) { color: var(--heat-habanero); }
+  .cat-row:nth-child(2) .cat-dot { background: var(--heat-jalapeno); }
+  .cat-row:nth-child(2) { color: var(--heat-jalapeno); }
+  .cat-row:nth-child(3) .cat-dot { background: var(--heat-habanero); }
+  .cat-row:nth-child(3) { color: var(--heat-habanero); }
+  .cat-row:nth-child(4) .cat-dot { background: var(--heat-poblano); }
+  .cat-row:nth-child(4) { color: var(--heat-poblano); }
+  .cat-row:nth-child(5) .cat-dot { background: var(--heat-bell); }
+  .cat-row:nth-child(5) { color: var(--heat-bell); }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 24px 56px;
+    border-radius: 100px;
+    border: 2px solid var(--gold);
+    background: rgba(245,185,26,0.1);
+    font-family: 'Space Mono', monospace;
+    font-size: 30px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+  }
+  .url {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .arrow-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="trophy">🗳️</div>
+  <div class="headline">
+    <span class="cast">Cast Your</span><br>
+    <span class="vote">Official Vote</span>
+  </div>
+  <div class="subtitle">Results revealed at end of season. Your vote counts.</div>
+
+  <div class="categories-recap">
+    <div class="cat-row"><div class="cat-dot"></div>Ghost Pepper — MVP</div>
+    <div class="cat-row"><div class="cat-dot"></div>Jalapeño — Most Improved</div>
+    <div class="cat-row"><div class="cat-dot"></div>Habanero — Best Performance</div>
+    <div class="cat-row"><div class="cat-dot"></div>Chipotle — Best Sportsmanship</div>
+    <div class="cat-row"><div class="cat-dot"></div>Bell Pepper — Most Fun Team</div>
+  </div>
+
+  <div class="cta-btn">🏆 Vote Now</div>
+  <div class="url">letspepper.com/awards</div>
+  <div class="arrow-hint">↑ Link in bio</div>
+</div>
+
+</body>
+</html>

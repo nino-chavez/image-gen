@@ -4,10 +4,16 @@
 
 import { BASE_STYLES, getStyleForCategory, extractVisualConcept } from './base.js';
 import { ILLUSTRATION_STYLES } from './illustration.js';
+import { LETS_PEPPER_STYLES } from './lets-pepper.js';
+import { SIGNAL_DISPATCH_STYLES } from './signal-dispatch.js';
+import { VOLLEY_RX_STYLES } from './volley-rx.js';
 
 const STYLE_SYSTEMS = {
   default: BASE_STYLES,
   illustration: ILLUSTRATION_STYLES,
+  'lets-pepper': LETS_PEPPER_STYLES,
+  'signal-dispatch': SIGNAL_DISPATCH_STYLES,
+  'volley-rx': VOLLEY_RX_STYLES,
 };
 
 /**
@@ -39,6 +45,8 @@ export function registerStyleSystem(name, styleSystem) {
 export {
   BASE_STYLES,
   ILLUSTRATION_STYLES,
+  LETS_PEPPER_STYLES,
+  VOLLEY_RX_STYLES,
   getStyleForCategory,
   extractVisualConcept,
 };

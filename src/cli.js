@@ -37,6 +37,7 @@ program
   .option('-h, --height <height>', 'Output height', '675')
   .option('-f, --format <format>', 'Output format (webp, jpeg, png)', 'webp')
   .option('-q, --quality <quality>', 'Output quality (1-100)', '85')
+  .option('-r, --ref <path>', 'Reference image path (for likeness/style matching)')
   .action(async (options) => {
     const spinner = ora('Initializing...').start();
 
@@ -54,10 +55,13 @@ program
       spinner.text = 'Generating image...';
 
       let result;
+      const refOptions = options.ref ? { referenceImage: options.ref } : {};
+
       if (options.description) {
         result = await generator.generateFromDescription(
           options.description,
-          options.output
+          options.output,
+          refOptions
         );
       } else if (options.title) {
         result = await generator.generateFromContent(

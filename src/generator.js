@@ -134,13 +134,18 @@ export class ImageGenerator {
    * @param {string} [outputPath]
    * @returns {Promise<object>}
    */
-  async generateFromDescription(description, outputPath) {
+  async generateFromDescription(description, outputPath, options = {}) {
     const prompt = buildSimplePrompt(description, {
       width: this.options.width,
       height: this.options.height,
     });
 
-    const rawBuffer = await this.provider.generate(prompt);
+    const generateOptions = {};
+    if (options.referenceImage || this.options.referenceImage) {
+      generateOptions.referenceImage = options.referenceImage || this.options.referenceImage;
+    }
+
+    const rawBuffer = await this.provider.generate(prompt, generateOptions);
 
     if (outputPath) {
       return optimizeAndSave(rawBuffer, outputPath, {
