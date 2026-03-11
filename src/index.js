@@ -12,8 +12,17 @@ export {
   createProvider,
   getBestProvider,
   OpenRouterProvider,
+  HtmlProvider,
   AVAILABLE_MODELS,
 } from './providers/index.js';
+
+// Template engine
+export {
+  renderTemplate,
+  renderTemplateFile,
+  listTemplates,
+  loadData,
+} from './templates/engine.js';
 
 // Style exports
 export {

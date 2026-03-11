@@ -14,6 +14,7 @@ import { listStyleSystems, getStyleSystem } from './styles/index.js';
 import { AVAILABLE_MODELS } from './providers/index.js';
 import { HtmlProvider } from './providers/html.js';
 import { optimizeAndSave } from './utils/optimizer.js';
+import { renderTemplateFile, listTemplates, loadData } from './templates/engine.js';
 
 // Load .env if present
 import dotenv from 'dotenv';
@@ -370,6 +371,84 @@ program
     } finally {
       await provider.close();
     }
+  });
+
+// Template rendering — HTML template + data → image
+program
+  .command('template')
+  .description('Render an HTML template with data to an image')
+  .requiredOption('-t, --template <path>', 'Path to HTML template file')
+  .requiredOption('-o, --output <path>', 'Output image path')
+  .option('-d, --data <path>', 'JSON data file for template interpolation')
+  .option('--set <pairs...>', 'Set data values inline (key=value)')
+  .option('-s, --scale <factor>', 'Device scale factor', '2')
+  .option('-f, --format <format>', 'Output format (png, webp, jpeg)', 'png')
+  .option('-q, --quality <quality>', 'Output quality (1-100)', '90')
+  .option('--wait <ms>', 'Extra wait for fonts/animations (ms)', '0')
+  .action(async (options) => {
+    const spinner = ora('Rendering template...').start();
+
+    try {
+      // Build data from --data file and/or --set key=value pairs
+      let data = {};
+      if (options.data) {
+        data = loadData(path.resolve(options.data));
+      }
+      if (options.set) {
+        for (const pair of options.set) {
+          const eqIdx = pair.indexOf('=');
+          if (eqIdx > 0) {
+            data[pair.slice(0, eqIdx)] = pair.slice(eqIdx + 1);
+          }
+        }
+      }
+
+      // Render template to HTML string
+      const templatePath = path.resolve(options.template);
+      const html = renderTemplateFile(templatePath, data);
+
+      // Render HTML to image
+      const provider = new HtmlProvider();
+      const renderOpts = {
+        deviceScaleFactor: parseFloat(options.scale),
+        waitMs: parseInt(options.wait),
+      };
+
+      const buffer = await provider.renderString(html, renderOpts);
+      const result = await optimizeAndSave(buffer, options.output, {
+        width: null,
+        height: null,
+        format: options.format,
+        quality: parseInt(options.quality),
+      });
+
+      await provider.close();
+      spinner.succeed(chalk.green(`Rendered: ${options.output} (${result.sizeKB}KB)`));
+    } catch (error) {
+      spinner.fail(chalk.red(`Error: ${error.message}`));
+      process.exit(1);
+    }
+  });
+
+// List available templates
+program
+  .command('templates')
+  .description('List available HTML templates')
+  .option('-d, --dir <path>', 'Templates directory', './templates')
+  .action((options) => {
+    const templates = listTemplates(path.resolve(options.dir));
+
+    if (templates.length === 0) {
+      console.log(chalk.yellow(`No templates found in ${options.dir}`));
+      return;
+    }
+
+    console.log(chalk.cyan(`\nTemplates in ${options.dir}:\n`));
+    for (const t of templates) {
+      console.log(`  ${chalk.bold(t.name)}`);
+      console.log(chalk.dim(`    ${t.path}`));
+    }
+    console.log('');
   });
 
 // Simple frontmatter extraction

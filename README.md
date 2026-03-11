@@ -1,61 +1,108 @@
 # @nino-tools/image-gen
 
-AI-powered image generation tool with style systems and optimization. Abstracted from the Signal Dispatch blog's image generation system.
+Image generation tool with two rendering paths: **AI generation** via OpenRouter and **HTML-to-PNG rendering** via Playwright. Includes style systems, a template engine, and sharp-based optimization.
 
 ## Features
 
-- **Provider-Agnostic**: Support for OpenRouter (Gemini, Flux, DALL-E) with extensible provider system
-- **Style Systems**: Category-based visual styles with concept mapping
-- **Image Optimization**: Sharp-based optimization with WebP/JPEG/PNG output
+- **AI Generation**: OpenRouter provider supporting Gemini, Flux, DALL-E, GPT Image
+- **HTML-to-PNG**: Render any HTML file to a screenshot using headless Chromium
+- **Template Engine**: `{{variable}}` interpolation, conditionals, loops — data-driven image creation
+- **Style Systems**: Category-based visual styles (illustration, lets-pepper, signal-dispatch, volley-rx)
+- **Image Optimization**: Sharp-based resize, format conversion (WebP/JPEG/PNG), quality control
 - **Progress Tracking**: Persistent progress for batch operations
 - **CLI & Library**: Use as a command-line tool or import into your project
-- **Agent Mode**: Intelligent style selection and batch prioritization
 
 ## Installation
 
 ```bash
-cd tools/image-gen
 npm install
+npx playwright install chromium
 ```
 
 ## Environment Setup
 
 ```bash
+# Required for AI generation only (not needed for HTML rendering)
 export OPENROUTER_API_KEY=your_api_key_here
 ```
 
 ## CLI Usage
 
-### Generate a Single Image
+### AI Generation
 
 ```bash
-# From a title (uses style system)
-npx image-gen generate --title "The Future of AI Assistants" --category "AI & Automation" -o header.webp
+# From a description
+image-gen generate -d "A lighthouse on a stormy night" -o lighthouse.webp
 
-# From a simple description
-npx image-gen generate --description "A lighthouse on a stormy night" -o lighthouse.webp
+# From a title with style system
+image-gen generate -t "The Future of AI" -c "AI & Automation" -s illustration -o header.webp
+
+# With a reference image
+image-gen generate -d "Similar style but with mountains" -r reference.png -o mountains.webp
 ```
 
-### Batch Generation
+### HTML-to-PNG Rendering
+
+```bash
+# Render a single HTML file
+image-gen render slide.html -o slide.png
+
+# Render a directory of HTML files
+image-gen render output/day2-hot-takes/ -f webp
+
+# With options
+image-gen render slide.html -o slide.png -s 1 -f webp -q 85 --wait 500
+```
+
+**Options:**
+- `-s, --scale <factor>` — Device scale factor (default: `2` for retina)
+- `-f, --format <fmt>` — Output format: `png`, `webp`, `jpeg` (default: `png`)
+- `-q, --quality <n>` — Lossy quality 1-100 (default: `90`)
+- `-w, --width <px>` — Override viewport width
+- `--height <px>` — Override viewport height
+- `--wait <ms>` — Extra wait after page load for fonts/animations
+- `--no-optimize` — Skip sharp processing, output raw screenshot
+
+Viewport is auto-detected from CSS `body { width: Xpx; height: Ypx; }`.
+
+### Template Rendering
+
+Combine an HTML template with JSON data to produce an image.
+
+```bash
+# With a JSON data file
+image-gen template -t templates/lets-pepper/story-cover.html -d data.json -o cover.png
+
+# With inline data
+image-gen template -t templates/lets-pepper/story-cover.html -o cover.png \
+  --set label=Community titleLine1=Hot titleLine2=Takes subtitle="The community has spoken."
+
+# List available templates
+image-gen templates -d ./templates
+```
+
+Templates use `{{variable}}` for escaped values, `{{{variable}}}` for raw HTML, `{{#if}}...{{/if}}` for conditionals, and `{{#each}}...{{/each}}` for loops.
+
+### Batch AI Generation
 
 ```bash
 # Generate images for all MDX files in a directory
-npx image-gen batch -i ./content/blog -o ./public/images --progress ./progress.json
+image-gen batch -i ./content/blog -o ./public/images --progress progress.json
 
 # Force regenerate all
-npx image-gen batch -i ./content/blog -o ./public/images --force
+image-gen batch -i ./content/blog -o ./public/images --force
 ```
 
 ### List Styles & Models
 
 ```bash
-npx image-gen styles -v
-npx image-gen models
+image-gen styles -v
+image-gen models
 ```
 
 ## Library Usage
 
-### Basic Generation
+### AI Generation
 
 ```javascript
 import { createGenerator } from '@nino-tools/image-gen';
@@ -66,49 +113,68 @@ const generator = await createGenerator({
   styleSystem: 'illustration',
 });
 
-// Generate from content
 const result = await generator.generateFromContent(
-  {
-    title: 'Building Better AI Agents',
-    excerpt: 'A practical guide to agent architecture',
-    category: 'AI & Automation',
-  },
+  { title: 'Building Better AI Agents', category: 'AI & Automation' },
   './output/ai-agents.webp'
-);
-
-// Generate from description
-const result2 = await generator.generateFromDescription(
-  'A minimalist illustration of interconnected nodes',
-  './output/network.webp'
 );
 ```
 
-### Using the Agent
+### HTML-to-PNG
 
 ```javascript
-import { createAgent } from '@nino-tools/image-gen';
+import { HtmlProvider } from '@nino-tools/image-gen';
 
-const agent = await createAgent({
-  styleSystem: 'illustration',
+const provider = new HtmlProvider();
+
+// Render a file
+const buffer = await provider.render('./slide.html', {
+  deviceScaleFactor: 2,
+  waitMs: 500,
 });
 
-// Get style recommendations
-const analysis = agent.analyzeContent({
-  title: 'Leadership in Times of Change',
-  category: 'Leadership',
-});
-console.log(analysis.reasoning);
+// Render an HTML string
+const buffer2 = await provider.renderString('<html>...</html>');
 
-// Generate with smart defaults
-const result = await agent.generate(
-  { title: 'My Article', category: 'Technology' },
-  './output.webp'
-);
+await provider.close();
+```
 
-// Batch with intelligent ordering
-await agent.generateBatch(items, (item) => `./images/${item.slug}.webp`, {
-  onProgress: (p) => console.log(`${p.current}/${p.total}: ${p.item.title}`),
+### Template Engine
+
+```javascript
+import { renderTemplate, renderTemplateFile } from '@nino-tools/image-gen';
+
+// Inline
+const html = renderTemplate('<h1>{{title}}</h1>', { title: 'Hello' });
+
+// From file
+const html2 = renderTemplateFile('./templates/story.html', {
+  label: 'Community',
+  titleLine1: 'Hot',
+  titleLine2: 'Takes',
 });
+```
+
+### Combined: Template + Render
+
+```javascript
+import { HtmlProvider } from '@nino-tools/image-gen';
+import { renderTemplateFile } from '@nino-tools/image-gen/templates';
+import { optimizeAndSave } from '@nino-tools/image-gen';
+
+const html = renderTemplateFile('./templates/lets-pepper/story-cover.html', {
+  label: 'Rankings',
+  titleLine1: 'Top',
+  titleLine2: 'Teams',
+  subtitle: 'Week 5 standings',
+  url: 'letspepper.com/rankings',
+});
+
+const provider = new HtmlProvider();
+const buffer = await provider.renderString(html, { deviceScaleFactor: 2 });
+await optimizeAndSave(buffer, './output/rankings-cover.png', {
+  width: null, height: null, format: 'png',
+});
+await provider.close();
 ```
 
 ### Custom Style System
@@ -120,124 +186,74 @@ registerStyleSystem('corporate', {
   name: 'corporate',
   description: 'Clean corporate illustrations',
   styles: {
-    'Finance': {
+    Finance: {
       background: 'Navy blue gradient (#0a1628 to #162447)',
       lineColor: 'Gold lines (#c9a227)',
       style: 'Professional, clean isometric',
       elements: 'charts, graphs, currency symbols',
       personality: 'Trustworthy and authoritative',
     },
-    // ... more categories
   },
-  default: {
-    background: 'Slate grey (#334155)',
-    lineColor: 'White with blue accents',
-    style: 'Modern minimalist',
-    elements: 'geometric shapes, clean lines',
-    personality: 'Professional and approachable',
-  },
-  conceptMap: {
-    'revenue': 'upward trending graph',
-    'growth': 'ascending staircase',
-    // ... more mappings
-  },
-});
-
-const generator = await createGenerator({
-  styleSystem: 'corporate',
+  default: { /* ... */ },
+  conceptMap: { revenue: 'upward trending graph' },
 });
 ```
 
 ## Style Systems
 
-### Built-in: `illustration`
-
-Hand-drawn editorial illustrations with category-based visual identities. Categories:
-
-| Category | Visual Style |
-|----------|--------------|
-| AI & Automation | Technical blueprint + cyan accents |
-| Reflections | Journal marginalia + golden amber |
-| Leadership | Architectural linework + gold |
-| Commerce | Isometric illustrations + teal/orange |
-| Meta | Escher-like geometries + violet/pink |
-| Systems Thinking | Organic diagrams + sky blue/green |
-| Consulting | Whiteboard sketches + copper |
-| Field Notes | Annotated sketches + graphite/red |
-| Photography | Viewfinder aesthetic + white/amber |
-| Technology | Technical diagrams + blue/green |
-| Design | Sketchbook aesthetic + coral |
-
-### Concept Map
-
-Keywords in titles are mapped to visual concepts:
-
-- `ai` → "friendly robot assistant"
-- `strategy` → "chess pieces in motion"
-- `team` → "figures working together"
-- `code` → "elegant flowing script"
-
-## API Reference
-
-### `createGenerator(options)`
-
-Creates an image generator instance.
-
-**Options:**
-- `provider`: Provider name (`'openrouter'` | `'auto'`)
-- `model`: Model alias (`'gemini-flash'`, `'flux-pro'`, etc.)
-- `styleSystem`: Style system name
-- `width`, `height`: Output dimensions (default: 1200x675)
-- `format`: Output format (`'webp'`, `'jpeg'`, `'png'`)
-- `quality`: Compression quality (1-100)
-- `rateLimitMs`: Delay between batch requests
-- `progressFile`: Path for progress tracking
-
-### `createAgent(options)`
-
-Creates an intelligent image agent with style analysis.
-
-**Additional Methods:**
-- `analyzeContent(content)`: Get style recommendations
-- `getStats()`: Get generation statistics
-- `getStyleRecommendations(items)`: Get batch recommendations
-
-### `buildPrompt(options)`
-
-Build a generation prompt manually.
-
-### Utilities
-
-- `optimizeBuffer(buffer, options)`: Optimize an image buffer
-- `optimizeAndSave(buffer, path, options)`: Optimize and save
-- `ProgressTracker`: Persistent progress tracking class
+| System | Description |
+|--------|-------------|
+| `illustration` | Hand-drawn editorial illustrations with category-based identities |
+| `lets-pepper` | Let's Pepper grass volleyball mascot — anthropomorphic pepper characters |
+| `signal-dispatch` | Signal Dispatch blog visual identity |
+| `volley-rx` | Volley RX brand style |
+| `default` | Clean, professional baseline |
 
 ## Architecture
 
 ```
-tools/image-gen/
+image-gen/
 ├── src/
-│   ├── index.js           # Main exports
-│   ├── generator.js       # Core generator class
-│   ├── agent.js           # Intelligent agent wrapper
-│   ├── prompt-builder.js  # Prompt construction
-│   ├── cli.js             # Command-line interface
+│   ├── index.js            # Main exports
+│   ├── generator.js        # Core AI generator class
+│   ├── agent.js            # Intelligent agent wrapper
+│   ├── prompt-builder.js   # Prompt construction
+│   ├── cli.js              # CLI (generate, render, template, batch)
 │   ├── providers/
-│   │   ├── base.js        # Provider interface
-│   │   ├── openrouter.js  # OpenRouter implementation
-│   │   └── index.js       # Provider registry
+│   │   ├── base.js         # Provider interface
+│   │   ├── openrouter.js   # AI generation via OpenRouter
+│   │   ├── html.js         # HTML-to-PNG via Playwright
+│   │   └── index.js        # Provider registry
 │   ├── styles/
-│   │   ├── base.js        # Style system interface
-│   │   ├── illustration.js # Hand-drawn styles
-│   │   └── index.js       # Style registry
+│   │   ├── base.js         # Style system interface
+│   │   ├── illustration.js # Hand-drawn editorial styles
+│   │   ├── lets-pepper.js  # Pepper mascot styles
+│   │   ├── signal-dispatch.js
+│   │   ├── volley-rx.js
+│   │   └── index.js        # Style registry
+│   ├── templates/
+│   │   └── engine.js       # Template interpolation engine
 │   └── utils/
-│       ├── optimizer.js   # Sharp-based optimization
-│       ├── progress.js    # Progress tracking
-│       └── index.js       # Utility exports
-├── examples/
+│       ├── optimizer.js    # Sharp-based optimization
+│       ├── progress.js     # Progress tracking
+│       └── index.js
+├── templates/              # HTML templates
+│   └── lets-pepper/
+│       └── story-cover.html
 ├── tests/
+│   └── run.js              # Test suite (37 tests)
+├── .github/workflows/
+│   └── ci.yml              # GitHub Actions CI
 └── package.json
 ```
+
+## Testing
+
+```bash
+npm test
+```
+
+Runs 37 tests covering style systems, prompt building, progress tracking, image optimization, template engine, HTML provider, and CLI smoke tests.
 
 ## License
 
