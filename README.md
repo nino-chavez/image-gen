@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./assets/readme/hero.svg" width="100%" alt="Image Gen provides two rendering paths: model-generated imagery and deterministic HTML-to-pixel output.">
+</p>
+
 # @nino-tools/image-gen
 
 Image generation tool with two rendering paths: **AI generation** via OpenRouter and **HTML-to-PNG rendering** via Playwright. Includes style systems, a template engine, and sharp-based optimization.
