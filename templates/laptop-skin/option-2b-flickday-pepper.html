@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Laptop Skin — Option 2b — Flickday × Let's Pepper Event</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1846px;
+    height: 1306px;
+    overflow: hidden;
+  }
+
+  body {
+    background: #04060a;
+    color: #f5f1e8;
+    font-family: 'Bebas Neue', sans-serif;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Sky: night atmosphere above the court --- */
+  .sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 65%;
+    background:
+      radial-gradient(ellipse 60% 70% at 18% -10%,
+        rgba(244, 196, 48, 0.32) 0%,
+        rgba(180, 110, 40, 0.18) 18%,
+        transparent 45%),
+      radial-gradient(ellipse 55% 70% at 92% -8%,
+        rgba(244, 196, 48, 0.28) 0%,
+        rgba(180, 110, 40, 0.15) 20%,
+        transparent 48%),
+      linear-gradient(180deg,
+        #0a1320 0%,
+        #08111c 40%,
+        #060d18 80%,
+        #050b14 100%);
+    z-index: 1;
+  }
+
+  /* --- Stadium light beams: diagonal cones falling from corners --- */
+  .light-beam-l, .light-beam-r {
+    position: absolute;
+    top: -10%;
+    width: 720px;
+    height: 1400px;
+    z-index: 2;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.65;
+  }
+  .light-beam-l {
+    left: -200px;
+    background: linear-gradient(160deg,
+      rgba(255, 220, 140, 0.22) 0%,
+      rgba(244, 196, 48, 0.10) 30%,
+      transparent 70%);
+    transform: rotate(-12deg);
+    transform-origin: top left;
+  }
+  .light-beam-r {
+    right: -200px;
+    background: linear-gradient(200deg,
+      rgba(255, 220, 140, 0.20) 0%,
+      rgba(244, 196, 48, 0.08) 30%,
+      transparent 70%);
+    transform: rotate(12deg);
+    transform-origin: top right;
+  }
+
+  /* --- Stadium light points (the actual fixtures glowing at top) --- */
+  .light-fixture {
+    position: absolute;
+    top: 40px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff4d0;
+    box-shadow:
+      0 0 14px 4px rgba(255, 240, 180, 0.95),
+      0 0 60px 18px rgba(244, 196, 48, 0.55),
+      0 0 160px 60px rgba(244, 196, 48, 0.18);
+    z-index: 11;
+  }
+  .lf-1 { left: 14%; }
+  .lf-2 { left: 28%; }
+  .lf-3 { right: 28%; }
+  .lf-4 { right: 14%; }
+
+  /* --- Net: faint horizontal band with vertical mesh --- */
+  .net {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 38%;
+    height: 130px;
+    z-index: 3;
+    opacity: 0.22;
+    background-image:
+      linear-gradient(180deg,
+        rgba(245, 241, 232, 0.0) 0%,
+        rgba(245, 241, 232, 0.55) 6%,
+        rgba(245, 241, 232, 0.18) 14%,
+        rgba(245, 241, 232, 0.18) 86%,
+        rgba(245, 241, 232, 0.55) 94%,
+        rgba(245, 241, 232, 0.0) 100%),
+      repeating-linear-gradient(90deg,
+        rgba(245, 241, 232, 0.45) 0px,
+        rgba(245, 241, 232, 0.45) 1px,
+        transparent 1px,
+        transparent 22px);
+    filter: blur(0.5px);
+    -webkit-mask-image: linear-gradient(90deg,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%);
+    mask-image: linear-gradient(90deg,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%);
+  }
+
+  /* --- Field: dark grass at the bottom --- */
+  .field {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 38%;
+    background:
+      radial-gradient(ellipse 80% 100% at 50% 100%,
+        rgba(40, 65, 28, 0.55) 0%,
+        rgba(20, 35, 18, 0.35) 30%,
+        transparent 70%),
+      linear-gradient(180deg,
+        #050b14 0%,
+        #07110b 30%,
+        #0a1a10 65%,
+        #0c1f10 100%);
+    z-index: 2;
+  }
+
+  /* Subtle grass texture — fine vertical noise */
+  .field::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(92deg,
+        rgba(80, 110, 60, 0.06) 0px,
+        rgba(80, 110, 60, 0.06) 1px,
+        transparent 1px,
+        transparent 4px);
+    opacity: 0.7;
+  }
+
+  /* --- Atmospheric dust drifting up from the field --- */
+  .particles {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .p {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 230, 170, 0.55);
+    box-shadow: 0 0 6px rgba(255, 220, 140, 0.4);
+  }
+
+  /* Hero character — Ghost Pepper, anchored right.
+     Radial mask fades the source's rectangular edges into the field
+     so the orange stadium glow blends with the surrounding dark. */
+  .character {
+    position: absolute;
+    top: 50%;
+    right: -120px;
+    transform: translateY(-50%);
+    height: 1380px;
+    width: auto;
+    z-index: 4;
+    -webkit-mask-image: radial-gradient(ellipse 62% 70% at center,
+      #000 30%,
+      rgba(0,0,0,0.85) 55%,
+      rgba(0,0,0,0.4) 78%,
+      transparent 100%);
+    mask-image: radial-gradient(ellipse 62% 70% at center,
+      #000 30%,
+      rgba(0,0,0,0.85) 55%,
+      rgba(0,0,0,0.4) 78%,
+      transparent 100%);
+    mix-blend-mode: screen;
+  }
+
+  /* Film grain */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    opacity: 0.16;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 9;
+  }
+
+  /* Vignette */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 110% 90% at center,
+      transparent 25%,
+      rgba(0,0,0,0.65) 100%);
+    z-index: 8;
+    pointer-events: none;
+  }
+
+  /* Apple logo dead zone */
+  .logo-zone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 220px;
+    height: 220px;
+    transform: translate(-50%, -50%);
+    z-index: 7;
+  }
+
+  /* Top: collaboration credit (matches the OFF THE MENU poster format) */
+  .credit {
+    position: absolute;
+    top: 80px;
+    left: 96px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 232, 0.85);
+    text-transform: uppercase;
+    z-index: 12;
+  }
+  .credit .x {
+    color: #f4c430;
+    margin: 0 14px;
+    font-weight: 500;
+  }
+
+  /* Top-right positioning line — no dates, no decay */
+  .positioning {
+    position: absolute;
+    top: 84px;
+    right: 96px;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 232, 0.75);
+    text-transform: uppercase;
+    line-height: 1.7;
+    z-index: 12;
+  }
+  .positioning .accent { color: #f4c430; }
+
+  /* Hero type — bottom-left, dominates the field */
+  .hero {
+    position: absolute;
+    bottom: 200px;
+    left: 96px;
+    z-index: 12;
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 0.85;
+    letter-spacing: -0.005em;
+  }
+  .hero .line-1 {
+    display: block;
+    font-size: 220px;
+    color: #f5f1e8;
+  }
+  .hero .line-2 {
+    display: block;
+    font-size: 220px;
+    color: #f4c430;
+    margin-top: -10px;
+  }
+
+  /* Yellow rule — sized to sit cleanly under the wordmark */
+  .rule {
+    position: absolute;
+    bottom: 162px;
+    left: 96px;
+    width: 120px;
+    height: 4px;
+    background: #f4c430;
+    z-index: 11;
+  }
+
+  /* Subtitle */
+  .sub {
+    position: absolute;
+    bottom: 110px;
+    left: 96px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 232, 0.7);
+    text-transform: uppercase;
+    z-index: 12;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 60px;
+    left: 96px;
+    right: 96px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 232, 0.55);
+    text-transform: uppercase;
+    z-index: 12;
+  }
+  .footer .accent { color: #f4c430; }
+</style>
+</head>
+<body>
+
+  <div class="sky"></div>
+  <div class="light-beam-l"></div>
+  <div class="light-beam-r"></div>
+  <div class="net"></div>
+  <div class="field"></div>
+  <div class="light-fixture lf-1"></div>
+  <div class="light-fixture lf-2"></div>
+  <div class="light-fixture lf-3"></div>
+  <div class="light-fixture lf-4"></div>
+  <div class="particles" id="particles"></div>
+
+  <img class="character" src="../../output/poster-mocks/concept-ghost-pepper-PRO-v2.png" alt="">
+
+  <div class="vignette"></div>
+  <div class="logo-zone"></div>
+
+  <div class="credit">FLICKDAY MEDIA<span class="x">×</span>LET'S PEPPER</div>
+
+  <div class="positioning">GRASSROOTS SPORTS MEDIA · CHICAGO</div>
+
+  <h1 class="hero">
+    <span class="line-1">EVERY DAY'S A</span>
+    <span class="line-2">FLICKDAY</span>
+  </h1>
+
+  <div class="rule"></div>
+  <div class="sub">SHOOT FOR THE ONES WHO LIVE IN THE RALLY</div>
+
+  <div class="footer">
+    <div>FLICKDAYMEDIA.COM<span class="accent"> / </span>LETSPEPPER.COM</div>
+    <div>@NINO.CHAVEZ.PHOTO</div>
+  </div>
+
+  <script>
+    // Atmospheric dust: weighted toward the field, drifting upward.
+    // Density falls off with height; brightness boosted near the stadium-light cones.
+    const container = document.getElementById('particles');
+    let s = 7919;
+    const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+    const W = 1846, H = 1306;
+    const count = 220;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'p';
+      // Bias y toward bottom 70% (where light catches dust above the field)
+      const y = H * (0.25 + Math.pow(rnd(), 0.6) * 0.72);
+      const x = rnd() * W;
+      // Avoid hero text zone (bottom-left)
+      if (x < W * 0.45 && y > H * 0.6 && rnd() > 0.15) continue;
+      // Avoid character zone (right half mid-to-bottom)
+      if (x > W * 0.55 && y > H * 0.18 && y < H * 0.92 && rnd() > 0.55) continue;
+      const size = 1.2 + rnd() * rnd() * 5;
+      // Brighter when in a light cone, dimmer in shadow
+      const inLightCone = (x < W * 0.32 || x > W * 0.68);
+      const baseOp = inLightCone ? 0.45 : 0.22;
+      const op = baseOp + rnd() * 0.35;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      p.style.opacity = op;
+      container.appendChild(p);
+    }
+  </script>
+
+</body>
+</html>

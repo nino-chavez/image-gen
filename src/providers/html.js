@@ -51,6 +51,7 @@ export class HtmlProvider {
    * @param {number} [options.height] - Override viewport height
    * @param {number} [options.deviceScaleFactor] - Pixel density (default 2 for retina)
    * @param {number} [options.waitMs] - Extra wait after load for fonts/animations
+   * @param {boolean} [options.transparent] - Omit background for transparent PNG (DTF transfers)
    * @returns {Promise<Buffer>} PNG buffer
    */
   async render(htmlPath, options = {}) {
@@ -78,6 +79,7 @@ export class HtmlProvider {
     const buffer = await page.screenshot({
       type: 'png',
       clip: { x: 0, y: 0, width, height },
+      omitBackground: options.transparent ?? false,
     });
 
     await page.close();
@@ -88,6 +90,7 @@ export class HtmlProvider {
    * Render an HTML string (not a file) to PNG
    * @param {string} htmlContent - Raw HTML string
    * @param {object} options
+   * @param {boolean} [options.transparent] - Omit background for transparent PNG (DTF transfers)
    * @returns {Promise<Buffer>}
    */
   async renderString(htmlContent, options = {}) {
@@ -102,7 +105,13 @@ export class HtmlProvider {
       deviceScaleFactor,
     });
 
-    await page.setContent(htmlContent, { waitUntil: 'networkidle' });
+    // Inject <base> tag so relative src/href paths resolve correctly
+    let content = htmlContent;
+    if (options.baseUrl) {
+      content = content.replace('<head>', `<head>\n<base href="${options.baseUrl}">`);
+    }
+
+    await page.setContent(content, { waitUntil: 'networkidle' });
 
     if (options.waitMs) {
       await page.waitForTimeout(options.waitMs);
@@ -111,6 +120,7 @@ export class HtmlProvider {
     const buffer = await page.screenshot({
       type: 'png',
       clip: { x: 0, y: 0, width, height },
+      omitBackground: options.transparent ?? false,
     });
 
     await page.close();

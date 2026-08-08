@@ -15,6 +15,9 @@ import { AVAILABLE_MODELS } from './providers/index.js';
 import { HtmlProvider } from './providers/html.js';
 import { optimizeAndSave } from './utils/optimizer.js';
 import { renderTemplateFile, listTemplates, loadData } from './templates/engine.js';
+// qr-generator is imported lazily inside the `qr` action: it pulls in `canvas`,
+// whose bundled libgio collides with sharp's libvips and prints an objc
+// duplicate-class warning on every command that loads it.
 
 // Load .env if present
 import dotenv from 'dotenv';
@@ -266,6 +269,7 @@ program
   .option('-f, --format <format>', 'Output format (png, webp, jpeg)', 'png')
   .option('-q, --quality <quality>', 'Output quality for lossy formats (1-100)', '90')
   .option('--wait <ms>', 'Extra wait time after page load (ms)', '0')
+  .option('--transparent', 'Transparent background (for DTF transfers)')
   .option('--no-optimize', 'Skip sharp optimization, output raw screenshot')
   .action(async (input, options) => {
     if (!input) {
@@ -291,6 +295,7 @@ program
       height: options.height ? parseInt(options.height) : undefined,
       deviceScaleFactor: parseFloat(options.scale),
       waitMs: parseInt(options.wait),
+      transparent: options.transparent || false,
     };
 
     try {
@@ -385,6 +390,7 @@ program
   .option('-f, --format <format>', 'Output format (png, webp, jpeg)', 'png')
   .option('-q, --quality <quality>', 'Output quality (1-100)', '90')
   .option('--wait <ms>', 'Extra wait for fonts/animations (ms)', '0')
+  .option('--transparent', 'Transparent background (for DTF transfers)')
   .action(async (options) => {
     const spinner = ora('Rendering template...').start();
 
@@ -407,11 +413,14 @@ program
       const templatePath = path.resolve(options.template);
       const html = renderTemplateFile(templatePath, data);
 
-      // Render HTML to image
+      // Render HTML to image — pass base URL so relative src paths resolve
       const provider = new HtmlProvider();
+      const templateDir = path.dirname(templatePath);
       const renderOpts = {
         deviceScaleFactor: parseFloat(options.scale),
         waitMs: parseInt(options.wait),
+        transparent: options.transparent || false,
+        baseUrl: `file://${templateDir}/`,
       };
 
       const buffer = await provider.renderString(html, renderOpts);
@@ -461,6 +470,7 @@ program
   .option('-f, --format <format>', 'Output format (png, webp, jpeg)', 'png')
   .option('-q, --quality <quality>', 'Output quality (1-100)', '90')
   .option('--wait <ms>', 'Extra wait for fonts/animations (ms)', '0')
+  .option('--transparent', 'Transparent background (for DTF transfers)')
   .action(async (input, options) => {
     const inputPath = path.resolve(input);
     const outPath = options.output || input.replace(/\.html?$/, `.${options.format}`);
@@ -474,6 +484,7 @@ program
     const renderOpts = {
       deviceScaleFactor: parseFloat(options.scale),
       waitMs: parseInt(options.wait),
+      transparent: options.transparent || false,
     };
 
     async function renderOnce() {
@@ -527,5 +538,58 @@ function extractFrontmatter(content) {
 
   return frontmatter;
 }
+
+// Styled QR code generation
+program
+  .command('qr')
+  .description('Generate a styled QR code with brand presets and optional embedded logo')
+  .option('-d, --data <url>', 'URL or text to encode in the QR code')
+  .option('-o, --output <path>', 'Output file path')
+  .option('-p, --preset <name>', 'Brand preset (signalx, signalx-light, nino, signalx-gradient, nino-gradient)', 'signalx')
+  .option('-l, --logo <path>', 'Path to logo image to embed in center')
+  .option('-s, --size <pixels>', 'QR code size in pixels', '1000')
+  .option('-f, --format <fmt>', 'Output format (png, svg)', 'png')
+  .option('--logo-margin <px>', 'Margin around embedded logo', '10')
+  .option('--logo-size <fraction>', 'Logo size as fraction of QR (0.1-0.4)', '0.25')
+  .option('--margin <px>', 'QR code outer margin', '20')
+  .option('--list', 'List available presets')
+  .action(async (options) => {
+    const { generateStyledQR, listPresets } = await import('./qr-generator.js');
+
+    if (options.list) {
+      console.log(chalk.cyan('\nAvailable QR Presets:\n'));
+      for (const p of listPresets()) {
+        console.log(`  ${chalk.bold(p.key)} — ${p.name}`);
+      }
+      console.log('');
+      return;
+    }
+
+    if (!options.data || !options.output) {
+      console.error(chalk.red('Error: --data and --output are required'));
+      process.exit(1);
+    }
+
+    const spinner = ora('Generating styled QR code...').start();
+
+    try {
+      const result = await generateStyledQR({
+        data: options.data,
+        output: options.output,
+        preset: options.preset,
+        logo: options.logo,
+        size: parseInt(options.size),
+        format: options.format,
+        logoMargin: parseInt(options.logoMargin),
+        logoSize: parseFloat(options.logoSize),
+        margin: parseInt(options.margin),
+      });
+
+      spinner.succeed(chalk.green(`Generated: ${result.path} (${result.sizeKB}KB)`));
+    } catch (error) {
+      spinner.fail(chalk.red(`Error: ${error.message}`));
+      process.exit(1);
+    }
+  });
 
 program.parse();

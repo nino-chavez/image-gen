@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 1584px;
+      height: 396px;
+      overflow: hidden;
+    }
+
+    body {
+      background: #000;
+      color: #f5f1e8;
+      font-family: 'Inter', system-ui, sans-serif;
+      position: relative;
+    }
+
+    /* Subtle film-grain texture */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      opacity: 0.12;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Waveform — svg element for precise control */
+    .waveform {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      transform: translateY(-50%);
+      z-index: 2;
+      opacity: 0.35;
+      /* Fade out the lower-left photo zone */
+      mask-image: linear-gradient(to right,
+        transparent 0%,
+        transparent 20%,
+        rgba(0,0,0,0.3) 28%,
+        #000 38%,
+        #000 100%);
+      -webkit-mask-image: linear-gradient(to right,
+        transparent 0%,
+        transparent 20%,
+        rgba(0,0,0,0.3) 28%,
+        #000 38%,
+        #000 100%);
+    }
+
+    .waveform path {
+      fill: none;
+      stroke: #e8e8ed;
+      stroke-width: 1.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .waveform .accent {
+      stroke: #a3e635;
+      opacity: 0.7;
+    }
+
+    /* URL chips upper-left */
+    .chips {
+      position: absolute;
+      top: 40px;
+      left: 64px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: rgba(245, 241, 232, 0.55);
+      line-height: 1.7;
+      text-transform: uppercase;
+      z-index: 4;
+    }
+
+    /* Headline right-aligned */
+    .headline {
+      position: absolute;
+      top: 50%;
+      right: 64px;
+      transform: translateY(-50%);
+      text-align: right;
+      font-family: 'Bebas Neue', 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 148px;
+      line-height: 0.85;
+      letter-spacing: -0.01em;
+      z-index: 5;
+    }
+
+    .headline .line-1 {
+      color: #f5f1e8;
+      display: block;
+    }
+
+    .headline .line-2 {
+      color: #a3e635;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Audio-style waveform behind the type -->
+  <svg class="waveform" viewBox="0 0 1584 200" preserveAspectRatio="none" aria-hidden="true">
+    <!-- Main waveform: irregular peaks like a real signal trace -->
+    <path d="M 0 100
+             L 40 100 L 55 80 L 70 115 L 85 95 L 100 100
+             L 140 100 L 155 60 L 165 140 L 175 70 L 185 130 L 200 90 L 215 108 L 230 100
+             L 280 100 L 295 95 L 310 105 L 320 100
+             L 380 100 L 395 75 L 405 125 L 415 82 L 425 118 L 435 88 L 450 112 L 465 100
+             L 520 100 L 535 98 L 545 102 L 555 100
+             L 610 100 L 625 55 L 635 145 L 645 65 L 655 135 L 665 78 L 680 122 L 695 92 L 710 108 L 725 100
+             L 780 100 L 795 90 L 810 110 L 820 100
+             L 880 100 L 895 72 L 905 128 L 915 85 L 925 115 L 940 100
+             L 1000 100 L 1015 95 L 1030 105 L 1040 100
+             L 1100 100 L 1115 60 L 1125 140 L 1135 75 L 1150 125 L 1165 88 L 1180 112 L 1195 100
+             L 1250 100 L 1265 97 L 1275 103 L 1285 100
+             L 1340 100 L 1355 78 L 1370 122 L 1385 85 L 1400 115 L 1415 95 L 1430 105 L 1445 100
+             L 1500 100 L 1515 98 L 1530 102 L 1584 100" />
+    <!-- Accent lime peaks scattered through the trace -->
+    <path class="accent" d="M 155 60 L 165 140 M 635 145 L 645 65 M 1115 60 L 1125 140" />
+  </svg>
+
+  <!-- URL chips -->
+  <div class="chips">
+    NINOCHAVEZ.CO<br>
+    SIGNALX.STUDIO
+  </div>
+
+  <!-- Headline -->
+  <h1 class="headline">
+    <span class="line-1">CUT THE NOISE</span>
+    <span class="line-2">FOLLOW THE SIGNAL</span>
+  </h1>
+</body>
+</html>

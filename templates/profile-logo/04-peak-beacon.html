@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Signal X Studio — Peak Beacon</title>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1024px;
+    height: 1024px;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+    <!-- Three concentric broadcast arcs above the beacon -->
+    <g fill="none" stroke="#f5f5f5" stroke-linecap="round">
+      <path d="M 332 380 A 180 180 0 0 1 692 380" stroke-width="22" />
+      <path d="M 252 380 A 260 260 0 0 1 772 380" stroke-width="16" opacity="0.55" />
+      <path d="M 172 380 A 340 340 0 0 1 852 380" stroke-width="12" opacity="0.28" />
+    </g>
+
+    <!-- Secondary peak behind, in mid-tone -->
+    <polygon points="408,820 700,492 924,820" fill="#3a3a3a" />
+
+    <!-- Foreground peak split into shadow + light facets -->
+    <polygon points="120,820 512,380 512,820" fill="#7a7a7a" />
+    <polygon points="512,820 512,380 820,820" fill="#f5f5f5" />
+
+    <!-- Baseline -->
+    <rect x="80" y="816" width="864" height="6" fill="#f5f5f5" />
+
+    <!-- Beacon at the peak -->
+    <circle cx="512" cy="380" r="26" fill="#0a0a0a" />
+    <circle cx="512" cy="380" r="14" fill="#f5f5f5" />
+  </svg>
+</body>
+</html>
