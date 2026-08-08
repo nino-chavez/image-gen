@@ -554,7 +554,15 @@ program
   .option('--margin <px>', 'QR code outer margin', '20')
   .option('--list', 'List available presets')
   .action(async (options) => {
-    const { generateStyledQR, listPresets } = await import('./qr-generator.js');
+    let generateStyledQR, listPresets;
+    try {
+      ({ generateStyledQR, listPresets } = await import('./qr-generator.js'));
+    } catch (error) {
+      console.error(chalk.red('The qr command needs its optional dependencies:'));
+      console.error(chalk.dim('  npm install canvas jsdom qr-code-styling'));
+      console.error(chalk.dim(`  (${error.message})`));
+      process.exit(1);
+    }
 
     if (options.list) {
       console.log(chalk.cyan('\nAvailable QR Presets:\n'));

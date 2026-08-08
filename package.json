@@ -45,16 +45,18 @@
   },
   "homepage": "https://github.com/nino-chavez/image-gen#readme",
   "dependencies": {
-    "canvas": "^3.2.1",
     "chalk": "^5.3.0",
     "commander": "^12.0.0",
     "dotenv": "^16.4.0",
-    "jsdom": "^29.0.0",
     "openai": "^4.70.0",
     "ora": "^8.0.0",
     "playwright": "^1.58.2",
-    "qr-code-styling": "^1.9.2",
     "sharp": "^0.34.0"
+  },
+  "optionalDependencies": {
+    "canvas": "^3.2.1",
+    "jsdom": "^29.0.0",
+    "qr-code-styling": "^1.9.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0"
