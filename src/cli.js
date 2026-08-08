@@ -12,7 +12,7 @@ import path from 'path';
 import { createGenerator } from './generator.js';
 import { listStyleSystems, getStyleSystem } from './styles/index.js';
 import { AVAILABLE_MODELS } from './providers/index.js';
-import { HtmlProvider } from './providers/html.js';
+import { HtmlProvider, TEMP_RENDER_PREFIX } from './providers/html.js';
 import { optimizeAndSave } from './utils/optimizer.js';
 import { renderTemplateFile, listTemplates, loadData } from './templates/engine.js';
 // qr-generator is imported lazily inside the `qr` action: it pulls in `canvas`,
@@ -321,6 +321,10 @@ program
       } else if (stat.isDirectory()) {
         // Batch directory mode
         const files = fs.readdirSync(inputPath).filter((f) => {
+          // Skip a render temp file left behind by an interrupted run — it is a
+          // copy of a template, not a template, and batching it renders a
+          // duplicate under a garbage name.
+          if (f.startsWith(TEMP_RENDER_PREFIX)) return false;
           if (options.pattern === '*.html') return f.endsWith('.html');
           return f.match(new RegExp(options.pattern.replace('*', '.*')));
         });

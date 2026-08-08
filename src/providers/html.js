@@ -4,14 +4,19 @@
  */
 
 import { chromium } from 'playwright';
+import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
+
+/** Prefix for the temp file renderString writes beside a template. */
+export const TEMP_RENDER_PREFIX = '.image-gen-render-';
 
 export class HtmlProvider {
   constructor(config = {}) {
     this.config = config;
     this.name = 'html';
     this.browser = null;
+    this.browserPromise = null;
   }
 
   async isAvailable() {
@@ -22,9 +27,14 @@ export class HtmlProvider {
    * Launch browser (reused across renders)
    */
   async ensureBrowser() {
-    if (!this.browser) {
-      this.browser = await chromium.launch();
+    // Memoize the launch promise, not the resolved browser. Two concurrent
+    // renders both saw `!this.browser`, both launched Chromium, and the second
+    // assignment orphaned the first — which then kept the process alive after
+    // close(), because nothing held a reference to shut it down.
+    if (!this.browserPromise) {
+      this.browserPromise = chromium.launch();
     }
+    this.browser = await this.browserPromise;
     return this.browser;
   }
 
@@ -85,9 +95,14 @@ export class HtmlProvider {
       });
     }
 
+    // randomUUID, not pid+timestamp: pid is constant within a process and
+    // Date.now() has millisecond granularity, so two concurrent renderString
+    // calls through one provider compute the same path — the second overwrites
+    // the first's markup, and whichever finally runs first deletes the file the
+    // other page is still loading.
     const tempPath = path.join(
       path.resolve(options.baseDir),
-      `.image-gen-render-${process.pid}-${Date.now()}.html`
+      `${TEMP_RENDER_PREFIX}${randomUUID()}.html`
     );
     fs.writeFileSync(tempPath, htmlContent, 'utf-8');
     try {
@@ -150,9 +165,12 @@ export class HtmlProvider {
    * Close the browser when done
    */
   async close() {
-    if (this.browser) {
-      await this.browser.close();
-      this.browser = null;
-    }
+    // Await the in-flight launch first, so a close() racing a start still has a
+    // browser to shut down rather than leaving one running.
+    const pending = this.browserPromise;
+    this.browserPromise = null;
+    const browser = this.browser || (pending ? await pending : null);
+    this.browser = null;
+    if (browser) await browser.close();
   }
 }

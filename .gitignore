@@ -10,3 +10,7 @@ output/
 # explicit opt-in below, one negation per file.
 refs/*
 !refs/flickday-logo-ref.png
+
+# renderString writes this beside a template so relative paths resolve;
+# it is removed on exit, but not after a hard kill.
+.image-gen-render-*

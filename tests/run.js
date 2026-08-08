@@ -430,6 +430,31 @@ test('HtmlProvider baseDir resolves relative image paths', async () => {
   }
 });
 
+test('HtmlProvider concurrent renders keep their own markup and exit clean', async () => {
+  // Regression: the temp filename was pid + Date.now(), so two renders dispatched
+  // together computed the same path and one overwrote the other's HTML. Separately,
+  // ensureBrowser launched twice and orphaned the first browser, hanging the process.
+  const provider = new HtmlProvider();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'image-gen-concurrent-'));
+  const page = (color) => `<!DOCTYPE html><html><head></head><body style="margin:0;width:20px;height:20px;background:${color}"></body></html>`;
+  try {
+    const [red, blue] = await Promise.all([
+      provider.renderString(page('#ff0000'), { width: 20, height: 20, deviceScaleFactor: 1, baseDir: dir }),
+      provider.renderString(page('#0000ff'), { width: 20, height: 20, deviceScaleFactor: 1, baseDir: dir }),
+    ]);
+    const { default: sharp } = await import('sharp');
+    const centre = async (buffer) => sharp(buffer).extract({ left: 10, top: 10, width: 1, height: 1 }).raw().toBuffer();
+    const r = await centre(red);
+    const b = await centre(blue);
+    assertEqual(r[0], 255, 'First render should keep its own red markup');
+    assertEqual(b[2], 255, 'Second render should keep its own blue markup');
+    assertEqual(fs.readdirSync(dir).length, 0, 'Both temp files should be cleaned up');
+  } finally {
+    await provider.close();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('HtmlProvider reports subresources that failed to load', async () => {
   const provider = new HtmlProvider();
   const html = '<!DOCTYPE html><html><head></head><body style="width:20px;height:20px;margin:0;"><img src="file:///nonexistent-image-gen-test.png"></body></html>';
