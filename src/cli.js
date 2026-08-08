@@ -420,7 +420,7 @@ program
         deviceScaleFactor: parseFloat(options.scale),
         waitMs: parseInt(options.wait),
         transparent: options.transparent || false,
-        baseUrl: `file://${templateDir}/`,
+        baseDir: templateDir,
       };
 
       const buffer = await provider.renderString(html, renderOpts);
