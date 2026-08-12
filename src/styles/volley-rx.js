@@ -143,6 +143,71 @@ CRITICAL:
         'Premium, established, prestigious. Like an old-world apothecary seal or luxury brand crest. Timeless.',
     },
 
+    'vault-character': {
+      background:
+        'TRANSPARENT — no background fill. Character illustration floats on transparency for DTF cutout.',
+      lineColor:
+        'Cream (#FDF8F0) line art with aged gold (#C4923A) accent fills. Limited palette — cream, gold, and minimal warm tones only.',
+      style:
+        'Fallout Vault-Boy / 1950s government pamphlet character illustration. Simple, clean, cheerful retro figure with optimistic expression. Bold outlines, flat color fills, minimal shading. CRITICAL: transparent background, character silhouette IS the cutout boundary.',
+      elements:
+        'Retro 1950s character (nurse, doctor, or pharmacist) in period-appropriate clothing. Simple body proportions, expressive face, cheerful/thumbs-up energy. Volleyball integrated as a prop (syringe, pill, prescription). Clean character outline for DTF contour cut. Atomic-age starburst or radiating lines behind figure for energy.',
+      personality:
+        'Cheerful, optimistic, slightly propagandistic. "Your government-approved dose of competition." Vault-Tec meets pharmaceutical advertising. Fun but authoritative.',
+    },
+
+    'apothecary-object': {
+      background:
+        'TRANSPARENT — no background fill. Object illustration floats on transparency for DTF cutout.',
+      lineColor:
+        'VIBRANT, SATURATED colors — brilliant cobalt blue (#0047AB, #2952A3, #7BAFD4), rich gold (#C4923A, #D4A843), cream (#FDF8F0). Dark navy (#1A1A2E) outlines. HIGH CONTRAST between elements.',
+      style:
+        'Victorian pharmaceutical catalog plate — FULL COLOR, richly rendered. Detailed glass with refraction, luminous colored liquids, polished brass metalwork. NOT line art, NOT monochrome, NOT faded/aged. Think museum-quality scientific illustration with jewel-toned saturated colors. CRITICAL: transparent background, object silhouette IS the cutout boundary.',
+      elements:
+        'Apothecary objects (show globes, bottles, jars, scales, mortar & pestle) with volleyballs inside. Glass should GLOW with color — cobalt blue, emerald green, amber. Brass/gold metalwork with realistic depth. The object should look like a real antique pharmacy piece, vivid and luminous.',
+      personality:
+        'Prestigious, collectible, museum-worthy. Like a hand-colored plate from a Victorian apothecary supply catalog. Rich, vivid, saturated — these objects were designed to catch the eye from the street.',
+    },
+
+    'apothecary-emblem': {
+      background:
+        'TRANSPARENT — no background fill. Emblem floats on transparency for DTF cutout.',
+      lineColor:
+        'Rich gold (#C4923A, #D4A843) metalwork. Royal blue (#2952A3) and cobalt (#0047AB) accents. Cream (#FDF8F0) details. Dark navy (#1A1A2E) deep fills. HIGH CONTRAST.',
+      style:
+        'Classical heraldic medallion / pharmaceutical guild emblem — FULL COLOR with metallic gold, deep blue, and rich contrast. Like a numismatic challenge coin or guild seal. NOT flat line art. CRITICAL: transparent background, emblem boundary IS the cutout.',
+      elements:
+        'Circular or shield-shaped emblem with ornamental border, classical pharmacy symbols (Bowl of Hygieia, serpent, chalice), volleyball as central motif. Gold metalwork with depth and dimension. Deep navy or cobalt fills inside the emblem for contrast.',
+      personality:
+        'Heraldic, prestigious, earned. Like an antique pharmacy guild medallion cast in gold and enamel. Rich saturated color, not muted.',
+    },
+
+    'warning-badge': {
+      background:
+        'TRANSPARENT — no background fill. Badge floats on transparency for DTF cutout.',
+      lineColor:
+        'Cream (#FDF8F0) and dark navy (#1A1A2E) high-contrast. Gold (#C4923A) ornamental frame. Royal blue (#2952A3) accent fills.',
+      style:
+        'Victorian pharmaceutical poison/warning label illustration — bold, high-contrast, playful-dangerous. Clean badge composition with ornamental frame. CRITICAL: transparent background, badge frame IS the cutout boundary.',
+      elements:
+        'Skull and crossbones motif with volleyball panels, ornamental warning badge frame, small Rx details. The visual tone is cheeky and fun, not genuinely scary. High contrast cream on navy.',
+      personality:
+        'Playful danger. "CAUTION: This sport is addictive." Like a Victorian poison cabinet label — bold, eye-catching, collectible.',
+    },
+
+    'pill-object': {
+      background:
+        'TRANSPARENT — no background fill. Object illustration floats on transparency for DTF cutout.',
+      lineColor:
+        'Cream (#FDF8F0) primary with aged gold (#C4923A) accents. Dark navy (#1A1A2E) for shadows and outlines.',
+      style:
+        'Vintage pharmaceutical product illustration — realistic but stylized. Like a 1950s magazine ad for medicine. Bold outlines, halftone shading, limited warm palette. CRITICAL: transparent background, object silhouette IS the cutout boundary.',
+      elements:
+        'Pharmaceutical objects (pill bottles, capsules, blister packs, syringes) with volleyballs integrated as the medicine. Vintage crosshatch/halftone shading. Rx symbol details. Objects should feel tangible and dimensional. Clean outer contour for DTF cut path.',
+      personality:
+        'The product IS the joke. Volleyballs as literal medicine. Playful pharmaceutical realism. Premium vintage illustration quality.',
+    },
+
     'pill-bottle': {
       background:
         'Aged parchment (#F5E6D3) with subtle paper grain, foxing marks, and slight yellowing at edges — like a genuine old pharmacy label',
