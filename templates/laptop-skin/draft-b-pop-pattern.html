@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Laptop Skin — Draft B v2 — Halftone Pop Pattern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Bebas+Neue&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1846px;
+    height: 1306px;
+    overflow: hidden;
+  }
+
+  body {
+    background: #f4c430;
+    color: #08080c;
+    font-family: 'Space Grotesk', sans-serif;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Halftone field on the yellow zone — black dots on yellow */
+  .halftone-yellow {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at center,
+        #08080c 0,
+        #08080c 7px,
+        transparent 7.5px);
+    background-size: 44px 44px;
+    z-index: 1;
+  }
+
+  /* Diagonal black zone — clear of the wordmark area in lower-left.
+     Seam runs from upper-left of canvas down through to bottom-right corner,
+     leaving the lower-left a clean yellow block for the wordmark. */
+  .block-dark {
+    position: absolute;
+    inset: 0;
+    background: #08080c;
+    clip-path: polygon(48% 0%, 100% 0%, 100% 100%, 82% 100%);
+    z-index: 2;
+  }
+
+  /* Halftone field on the dark zone — yellow dots on black */
+  .halftone-dark {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at center,
+        #f4c430 0,
+        #f4c430 7px,
+        transparent 7.5px);
+    background-size: 44px 44px;
+    background-position: 0 0;
+    clip-path: polygon(48% 0%, 100% 0%, 100% 100%, 82% 100%);
+    z-index: 3;
+  }
+
+  /* Apple logo dead zone */
+  .logo-zone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 220px;
+    height: 220px;
+    transform: translate(-50%, -50%);
+    z-index: 7;
+  }
+
+  /* Wordmark zone — solid yellow knockout for legibility, lower-left */
+  .wordmark-bg {
+    position: absolute;
+    bottom: 110px;
+    left: 96px;
+    padding: 24px 32px 28px;
+    background: #f4c430;
+    z-index: 9;
+  }
+
+  .wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    line-height: 0.92;
+    color: #08080c;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+  }
+  .wordmark .lg {
+    display: block;
+    font-size: 168px;
+  }
+
+  /* Top-left credit chip — sized to read */
+  .credit-tl {
+    position: absolute;
+    top: 96px;
+    left: 96px;
+    background: #08080c;
+    color: #f4c430;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    z-index: 10;
+  }
+
+  /* Top-right tagline — solid black knockout for legibility against the dotted dark field */
+  .tagline-tr {
+    position: absolute;
+    top: 96px;
+    right: 96px;
+    background: #08080c;
+    padding: 28px 36px 36px;
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 0.84;
+    letter-spacing: -0.005em;
+    text-align: right;
+    text-transform: uppercase;
+    z-index: 10;
+  }
+  .tagline-tr .setup {
+    display: block;
+    font-size: 130px;
+    color: #f4c430;
+  }
+  .tagline-tr .punch {
+    display: block;
+    font-size: 224px;
+    color: #ffffff;
+    margin-top: -8px;
+  }
+
+  /* Footer copy on the yellow side bottom */
+  .footer-yellow {
+    position: absolute;
+    bottom: 60px;
+    left: 96px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #08080c;
+    z-index: 10;
+  }
+
+  /* Footer copy on the dark side bottom */
+  .footer-dark {
+    position: absolute;
+    bottom: 60px;
+    right: 96px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #f4c430;
+    text-align: right;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+  <div class="halftone-yellow"></div>
+  <div class="block-dark"></div>
+  <div class="halftone-dark"></div>
+
+  <div class="credit-tl">SPORTS · MEDIA · CHICAGO</div>
+
+  <div class="tagline-tr">
+    <span class="setup">EVERY DAY'S A</span>
+    <span class="punch">FLICKDAY</span>
+  </div>
+
+  <div class="logo-zone"></div>
+
+  <div class="wordmark-bg">
+    <div class="wordmark">
+      <span class="lg">LET'S</span>
+      <span class="lg">PEPPER</span>
+    </div>
+  </div>
+
+  <div class="footer-yellow">LETSPEPPER.COM</div>
+  <div class="footer-dark">FLICKDAYMEDIA.COM · @NINO.CHAVEZ.PHOTO</div>
+
+</body>
+</html>

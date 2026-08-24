@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Signal X Studio — Viewfinder</title>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1024px;
+    height: 1024px;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+    <!-- Precision viewfinder / reticle. Concentric rings + cross-hairs
+         + tick marks at the diagonals. Reads as a camera/scope target,
+         tying signal + media + sports without spelling out X. -->
+
+    <!-- Outer ring -->
+    <circle cx="512" cy="512" r="396" fill="none" stroke="#f5f5f5" stroke-width="20" />
+
+    <!-- Mid ring -->
+    <circle cx="512" cy="512" r="252" fill="none" stroke="#f5f5f5" stroke-width="14" opacity="0.7" />
+
+    <!-- Cross-hairs: N, E, S, W. Each line spans from just outside the
+         outer ring to just inside the inner ring, leaving a small gap
+         around the center. -->
+    <g stroke="#f5f5f5" stroke-width="22" stroke-linecap="square">
+      <line x1="512" y1="92"  x2="512" y2="320" />
+      <line x1="932" y1="512" x2="704" y2="512" />
+      <line x1="512" y1="932" x2="512" y2="704" />
+      <line x1="92"  y1="512" x2="320" y2="512" />
+    </g>
+
+    <!-- Diagonal corner ticks -->
+    <g stroke="#f5f5f5" stroke-width="14" stroke-linecap="square" opacity="0.85">
+      <line x1="226" y1="226" x2="296" y2="296" />
+      <line x1="798" y1="226" x2="728" y2="296" />
+      <line x1="798" y1="798" x2="728" y2="728" />
+      <line x1="226" y1="798" x2="296" y2="728" />
+    </g>
+
+    <!-- Center pip: a small filled disc inside a thin ring -->
+    <circle cx="512" cy="512" r="60" fill="none" stroke="#f5f5f5" stroke-width="10" />
+    <circle cx="512" cy="512" r="22" fill="#f5f5f5" />
+  </svg>
+</body>
+</html>

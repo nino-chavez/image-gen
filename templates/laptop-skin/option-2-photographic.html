@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Laptop Skin — Option 2 — Photographic / Flickday Lane</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1846px;
+    height: 1306px;
+    overflow: hidden;
+  }
+
+  body {
+    background: #04060a;
+    color: #f5f1e8;
+    font-family: 'Bebas Neue', sans-serif;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Stage: deep navy field with stadium glow --- */
+  .stage {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 90% 70% at 22% 38%,
+        rgba(60, 90, 140, 0.55) 0%,
+        rgba(20, 35, 60, 0.4) 28%,
+        transparent 62%),
+      radial-gradient(ellipse 70% 60% at 78% 70%,
+        rgba(40, 60, 100, 0.45) 0%,
+        rgba(15, 25, 45, 0.3) 30%,
+        transparent 60%),
+      linear-gradient(180deg, #06080e 0%, #02030a 100%);
+    z-index: 1;
+  }
+
+  /* --- Light particles (the "spray" feel from flickdaymedia.com) --- */
+  .particles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .p {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(220, 235, 255, 0.85);
+    box-shadow: 0 0 8px rgba(180, 210, 255, 0.5);
+  }
+
+  /* --- Heavy film grain --- */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 9;
+  }
+
+  /* Vignette darkening edges */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 110% 90% at center,
+      transparent 30%,
+      rgba(0,0,0,0.55) 100%);
+    z-index: 8;
+    pointer-events: none;
+  }
+
+  /* Apple logo exclusion zone */
+  .logo-zone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 220px;
+    height: 220px;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+  }
+
+  /* Booking badge — top left */
+  .badge {
+    position: absolute;
+    top: 80px;
+    left: 96px;
+    background: #f4c430;
+    color: #08080c;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    z-index: 12;
+  }
+
+  .badge .dot {
+    color: #08080c;
+    margin-right: 8px;
+  }
+
+  /* Main type — bottom-left, like flickdaymedia.com */
+  .hero {
+    position: absolute;
+    bottom: 180px;
+    left: 96px;
+    right: 96px;
+    z-index: 12;
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 0.85;
+    letter-spacing: -0.005em;
+  }
+
+  .hero .line-1 {
+    display: block;
+    font-size: 280px;
+    color: #f5f1e8;
+  }
+
+  .hero .line-2 {
+    display: block;
+    font-size: 280px;
+    color: #f4c430;
+    margin-top: -12px;
+  }
+
+  /* Yellow rule under the type */
+  .rule {
+    position: absolute;
+    bottom: 130px;
+    left: 96px;
+    width: 380px;
+    height: 4px;
+    background: #f4c430;
+    z-index: 11;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 60px;
+    left: 96px;
+    right: 96px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 232, 0.55);
+    text-transform: uppercase;
+    z-index: 12;
+  }
+
+  .footer .accent { color: #f4c430; }
+
+  /* Tagline mid-right */
+  .tagline {
+    position: absolute;
+    top: 84px;
+    right: 96px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    color: rgba(245, 241, 232, 0.55);
+    text-transform: uppercase;
+    text-align: right;
+    line-height: 1.7;
+    z-index: 12;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage"></div>
+
+  <div class="particles" id="particles"></div>
+
+  <div class="vignette"></div>
+
+  <div class="logo-zone"></div>
+
+  <div class="badge"><span class="dot">●</span>NOW BOOKING 2026</div>
+
+  <div class="tagline">
+    GRASSROOTS SPORTS MEDIA<br>
+    RAW · FAST · PLAYER-FIRST
+  </div>
+
+  <h1 class="hero">
+    <span class="line-1">EVERY DAY'S A</span>
+    <span class="line-2">FLICKDAY</span>
+  </h1>
+
+  <div class="rule"></div>
+
+  <div class="footer">
+    <div>FLICKDAY MEDIA<span class="accent"> / </span>@NINO.CHAVEZ.PHOTO</div>
+    <div>FLICKDAYMEDIA.COM</div>
+  </div>
+
+  <script>
+    // Generate scattered light particles to evoke the spray photograph
+    const container = document.getElementById('particles');
+    const seed = 7919;
+    let s = seed;
+    const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+
+    const W = 1846, H = 1306;
+    const count = 320;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'p';
+      const size = 1.5 + rnd() * rnd() * 7;
+      const x = rnd() * W;
+      const y = rnd() * H;
+      const op = 0.25 + rnd() * 0.7;
+      // Avoid the headline area (bottom-left third) for legibility
+      const inHeadlineZone = (x < W * 0.55 && y > H * 0.55);
+      if (inHeadlineZone && rnd() > 0.25) continue;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      p.style.opacity = op;
+      // Some particles tinted yellow (catching stadium light)
+      if (rnd() > 0.85) {
+        p.style.background = 'rgba(244, 196, 48, 0.9)';
+        p.style.boxShadow = '0 0 10px rgba(244, 196, 48, 0.6)';
+      }
+      container.appendChild(p);
+    }
+  </script>
+
+</body>
+</html>
