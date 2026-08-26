@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1098">
+<title>Business Card — Front (Lime) — Print Ready</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1098px;
+    height: 648px;
+    background: #84cc16;
+    font-family: 'JetBrains Mono', monospace;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  .bleed {
+    width: 1098px;
+    height: 648px;
+    position: relative;
+  }
+
+  .card {
+    position: absolute;
+    top: 24px; left: 24px;
+    width: 1050px; height: 600px;
+    padding: 48px 64px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* ── Name: massive, cropped off the right edge ── */
+  .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 180px;
+    letter-spacing: -0.01em;
+    color: #0a0a0a;
+    line-height: 0.82;
+    margin-left: -6px; /* optical alignment */
+  }
+
+  /* ── Bio ── */
+  .bio {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    letter-spacing: 0.02em;
+    color: #1a3a00;
+    line-height: 1.5;
+  }
+
+  /* ── Bottom row ── */
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    letter-spacing: 0.03em;
+    color: #0a0a0a;
+    line-height: 1;
+  }
+
+  .location {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2d5a00;
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+<div class="bleed">
+  <div class="card">
+    <div class="name">NINO<br>CHAVEZ</div>
+
+    <div class="bio">Designer who codes.<br>Architect who designs.</div>
+
+    <div class="bottom">
+      <div class="url">ninochavez.co</div>
+      <div class="location">Chicago</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

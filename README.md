@@ -30,6 +30,17 @@ npx playwright install chromium
 export OPENROUTER_API_KEY=your_api_key_here
 ```
 
+`.env.example` materializes that one key from 1Password (`op inject -i .env.example -o .env`).
+
+The generation scripts under `scripts/` read four non-secret settings, all optional:
+
+| Variable | Used by | Default |
+|---|---|---|
+| `IMAGE_GEN_REF_DIR` | `lpo-apparel-kit.mjs` | `~/Downloads/ref` |
+| `LPO_MASCOT_ANCHOR` | `lpo-pep-apparel.mjs` | the letspepper checkout as a workspace sibling |
+| `FD_MODEL` | `flickday-d-glyph.mjs`, `flickday-reel-wordmark.mjs` | `gpt-image` |
+| `FD_NOREF` | `flickday-reel-wordmark.mjs` | unset — set it to render without the reference image |
+
 ## CLI Usage
 
 ### AI Generation

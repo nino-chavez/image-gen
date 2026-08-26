@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Signal X Studio — Compass Star</title>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1024px;
+    height: 1024px;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+    <!-- Four-pointed star, X-oriented (tips at corners), faceted into
+         8 triangles. Each arm is a kite split by a center-to-tip ridge,
+         shaded as if lit from upper-right.
+
+         Coordinates:
+         center        (512, 512)
+         shoulders:    N (512, 380)  E (644, 512)  S (512, 644)  W (380, 512)
+         outer tips:   NE (820, 204) SE (820, 820) SW (204, 820) NW (204, 204)
+    -->
+
+    <!-- NE arm -->
+    <polygon points="512,512 512,380 820,204" fill="#f5f5f5" />
+    <polygon points="512,512 820,204 644,512" fill="#cfcfcf" />
+
+    <!-- SE arm -->
+    <polygon points="512,512 644,512 820,820" fill="#9a9a9a" />
+    <polygon points="512,512 820,820 512,644" fill="#7a7a7a" />
+
+    <!-- SW arm -->
+    <polygon points="512,512 512,644 204,820" fill="#525252" />
+    <polygon points="512,512 204,820 380,512" fill="#666666" />
+
+    <!-- NW arm -->
+    <polygon points="512,512 380,512 204,204" fill="#888888" />
+    <polygon points="512,512 204,204 512,380" fill="#b0b0b0" />
+
+    <!-- Center pinpoint -->
+    <circle cx="512" cy="512" r="12" fill="#0a0a0a" />
+  </svg>
+</body>
+</html>

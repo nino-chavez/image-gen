@@ -18,6 +18,7 @@ import {
   listTemplates,
 } from '../src/index.js';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -291,6 +292,12 @@ test('renderTemplate handles object loops', () => {
   assertEqual(result, 'Alice-Bob-');
 });
 
+test('renderTemplate object loops accept this.key alongside key', () => {
+  const tmpl = '{{#each people}}{{this.name}}:{{name}}-{{/each}}';
+  const result = renderTemplate(tmpl, { people: [{ name: 'Alice' }, { name: 'Bob' }] });
+  assertEqual(result, 'Alice:Alice-Bob:Bob-');
+});
+
 test('renderTemplate handles nested values', () => {
   const result = renderTemplate('{{user.name}}', { user: { name: 'Nino' } });
   assertEqual(result, 'Nino');
@@ -377,6 +384,106 @@ test('HtmlProvider renders a file to PNG', async () => {
     await provider.close();
     fs.unlinkSync(testHtml);
   }
+});
+
+test('HtmlProvider transparent omits the background', async () => {
+  const provider = new HtmlProvider();
+  // No background on body, so a transparent render must leave alpha at 0.
+  const html = '<!DOCTYPE html><html><head></head><body style="width:20px;height:20px;margin:0;"></body></html>';
+  try {
+    const opaque = await provider.renderString(html, { width: 20, height: 20, deviceScaleFactor: 1 });
+    const clear = await provider.renderString(html, { width: 20, height: 20, deviceScaleFactor: 1, transparent: true });
+    const { default: sharp } = await import('sharp');
+    const opaqueAlpha = (await sharp(opaque).ensureAlpha().extract({ left: 10, top: 10, width: 1, height: 1 }).raw().toBuffer())[3];
+    const clearAlpha = (await sharp(clear).ensureAlpha().extract({ left: 10, top: 10, width: 1, height: 1 }).raw().toBuffer())[3];
+    assertEqual(opaqueAlpha, 255, 'Default render should be opaque');
+    assertEqual(clearAlpha, 0, 'transparent render should have zero alpha');
+  } finally {
+    await provider.close();
+  }
+});
+
+test('HtmlProvider baseDir resolves relative image paths', async () => {
+  // Regression: a <base> tag cannot do this. setContent leaves the document on
+  // about:blank and Chromium blocks file-scheme subresources into that origin,
+  // so the image rendered blank while networkidle still resolved.
+  const provider = new HtmlProvider();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'image-gen-basedir-'));
+  const { default: sharp } = await import('sharp');
+  const red = await sharp({ create: { width: 20, height: 20, channels: 3, background: { r: 255, g: 0, b: 0 } } }).png().toBuffer();
+  fs.writeFileSync(path.join(dir, 'pic.png'), red);
+
+  const html = `<!DOCTYPE html><html><head><style>
+    body{margin:0;width:20px;height:20px;background:#0000ff}
+    img{width:20px;height:20px;display:block}
+  </style></head><body><img src="pic.png"></body></html>`;
+
+  try {
+    const buffer = await provider.renderString(html, { width: 20, height: 20, deviceScaleFactor: 1, baseDir: dir });
+    const px = await sharp(buffer).extract({ left: 10, top: 10, width: 1, height: 1 }).raw().toBuffer();
+    assertEqual(px[0], 255, 'Relative image should load (red), not fall through to the blue body');
+    assertEqual(px[2], 0, 'Relative image should load (red), not fall through to the blue body');
+    assertEqual(fs.readdirSync(dir).filter((f) => f.startsWith('.image-gen-render-')).length, 0, 'Temp render file should be cleaned up');
+  } finally {
+    await provider.close();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('HtmlProvider concurrent renders keep their own markup and exit clean', async () => {
+  // Regression: the temp filename was pid + Date.now(), so two renders dispatched
+  // together computed the same path and one overwrote the other's HTML. Separately,
+  // ensureBrowser launched twice and orphaned the first browser, hanging the process.
+  const provider = new HtmlProvider();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'image-gen-concurrent-'));
+  const page = (color) => `<!DOCTYPE html><html><head></head><body style="margin:0;width:20px;height:20px;background:${color}"></body></html>`;
+  try {
+    const [red, blue] = await Promise.all([
+      provider.renderString(page('#ff0000'), { width: 20, height: 20, deviceScaleFactor: 1, baseDir: dir }),
+      provider.renderString(page('#0000ff'), { width: 20, height: 20, deviceScaleFactor: 1, baseDir: dir }),
+    ]);
+    const { default: sharp } = await import('sharp');
+    const centre = async (buffer) => sharp(buffer).extract({ left: 10, top: 10, width: 1, height: 1 }).raw().toBuffer();
+    const r = await centre(red);
+    const b = await centre(blue);
+    assertEqual(r[0], 255, 'First render should keep its own red markup');
+    assertEqual(b[2], 255, 'Second render should keep its own blue markup');
+    assertEqual(fs.readdirSync(dir).length, 0, 'Both temp files should be cleaned up');
+  } finally {
+    await provider.close();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('HtmlProvider reports subresources that failed to load', async () => {
+  const provider = new HtmlProvider();
+  const html = '<!DOCTYPE html><html><head></head><body style="width:20px;height:20px;margin:0;"><img src="file:///nonexistent-image-gen-test.png"></body></html>';
+  const warnings = [];
+  const originalWarn = console.warn;
+  console.warn = (message) => warnings.push(String(message));
+  try {
+    await provider.renderString(html, { width: 20, height: 20, deviceScaleFactor: 1 });
+  } finally {
+    console.warn = originalWarn;
+    await provider.close();
+  }
+  assert(warnings.some((w) => w.includes('failed to load')), 'Should warn about the missing asset');
+  assert(warnings.some((w) => w.includes('nonexistent-image-gen-test.png')), 'Should name the failing URL');
+});
+
+test('HtmlProvider stays quiet when every asset loads', async () => {
+  const provider = new HtmlProvider();
+  const html = '<!DOCTYPE html><html><head></head><body style="width:20px;height:20px;margin:0;background:red;"></body></html>';
+  const warnings = [];
+  const originalWarn = console.warn;
+  console.warn = (message) => warnings.push(String(message));
+  try {
+    await provider.renderString(html, { width: 20, height: 20, deviceScaleFactor: 1 });
+  } finally {
+    console.warn = originalWarn;
+    await provider.close();
+  }
+  assertEqual(warnings.length, 0, `Clean render should not warn, got: ${warnings.join('; ')}`);
 });
 
 // ── CLI Smoke Tests ─────────────────────────────────────────────

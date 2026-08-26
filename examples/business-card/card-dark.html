@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1098">
+<title>Business Card — Back (Signal in the Noise) — Print Ready</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono:wght@400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1098px;
+    height: 648px;
+    background: #08080c;
+    font-family: 'JetBrains Mono', monospace;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  .bleed {
+    width: 1098px;
+    height: 648px;
+    position: relative;
+  }
+
+  /* ── Noise lines — the visual metaphor ── */
+  .noise-lines {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .noise-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+
+  /* The signal — one line in lime */
+  .signal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    top: 340px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      #84cc16 6%,
+      #84cc16 94%,
+      transparent 100%
+    );
+    z-index: 2;
+  }
+
+  .card {
+    position: absolute;
+    top: 24px; left: 24px;
+    width: 1050px; height: 600px;
+    padding: 52px 64px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 3;
+  }
+
+  /* ── Top: wordmark ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #e8e8ed;
+    line-height: 1;
+  }
+  .wordmark .x { color: #84cc16; }
+
+  .descriptor {
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #2a2a38;
+    line-height: 1;
+  }
+
+  /* ── Middle: domains on the signal line ── */
+  .domains {
+    display: flex;
+    gap: 48px;
+    padding-top: 8px;
+  }
+
+  .domain-tag {
+    font-size: 30px;
+    letter-spacing: 0.03em;
+    color: #e8e8ed;
+    line-height: 1;
+  }
+
+  /* ── Bottom: contact ── */
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .contact-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact-line {
+    font-size: 27px;
+    color: #585868;
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+  .email {
+    color: #9090a0;
+  }
+</style>
+</head>
+<body>
+<div class="bleed">
+  <!-- Noise: scattered horizontal lines at varying opacities -->
+  <div class="noise-lines">
+    <div class="noise-line" style="top: 52px; background: #101018;"></div>
+    <div class="noise-line" style="top: 88px; background: #0e0e16;"></div>
+    <div class="noise-line" style="top: 115px; background: #141420;"></div>
+    <div class="noise-line" style="top: 148px; background: #0c0c14;"></div>
+    <div class="noise-line" style="top: 172px; background: #111119;"></div>
+    <div class="noise-line" style="top: 198px; background: #0f0f18;"></div>
+    <div class="noise-line" style="top: 230px; background: #13131e;"></div>
+    <div class="noise-line" style="top: 255px; background: #0d0d15;"></div>
+    <div class="noise-line" style="top: 285px; background: #101018;"></div>
+    <div class="noise-line" style="top: 310px; background: #0e0e16;"></div>
+    <!-- THE SIGNAL at 340px — lime green, thicker -->
+    <div class="signal"></div>
+    <div class="noise-line" style="top: 375px; background: #111119;"></div>
+    <div class="noise-line" style="top: 405px; background: #0c0c14;"></div>
+    <div class="noise-line" style="top: 432px; background: #13131e;"></div>
+    <div class="noise-line" style="top: 460px; background: #0f0f18;"></div>
+    <div class="noise-line" style="top: 490px; background: #101018;"></div>
+    <div class="noise-line" style="top: 518px; background: #0e0e16;"></div>
+    <div class="noise-line" style="top: 548px; background: #141420;"></div>
+    <div class="noise-line" style="top: 580px; background: #0d0d15;"></div>
+    <div class="noise-line" style="top: 610px; background: #111119;"></div>
+  </div>
+
+  <div class="card">
+    <div class="header">
+      <div class="wordmark">Signal <span class="x">&times;</span> Studio</div>
+      <div class="descriptor">Creative Tech Holding Co.</div>
+    </div>
+
+    <div class="domains">
+      <div class="domain-tag">Sports</div>
+      <div class="domain-tag">SaaS</div>
+      <div class="domain-tag">Media</div>
+    </div>
+
+    <div class="bottom">
+      <div class="contact-stack">
+        <div class="contact-line email">nino@signalx.studio</div>
+        <div class="contact-line">signalx.studio</div>
+      </div>
+      <div class="contact-line">Chicago, IL</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,7 +1,8 @@
 /**
  * Let's Pepper team-kit apparel art — generated AT the bar of Nino's finished
- * Brand Kit pieces (~/Downloads/ref): character + painted explosion + hand-
- * brushed lettering as ONE illustrated unit. Multi-reference: his finished
+ * Brand Kit pieces (IMAGE_GEN_REF_DIR, default ~/Downloads/ref): character +
+ * painted explosion + hand-brushed lettering as ONE illustrated unit.
+ * Multi-reference: his finished
  * composition carries the lettering/composition style, his green hero carries
  * the character. Green colorway = the Let's Pepper team identity.
  *
@@ -13,12 +14,14 @@ import { optimizeAndSave } from '../src/index.js'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { mkdirSync } from 'node:fs'
+import { homedir } from 'node:os'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const dir = join(HERE, '..', 'output', 'lpo-apparel')
 mkdirSync(dir, { recursive: true })
 
-const REF = '/Users/nino/Downloads/ref'
+// Brand Kit source pieces. Override with IMAGE_GEN_REF_DIR to point elsewhere.
+const REF = process.env.IMAGE_GEN_REF_DIR ?? join(homedir(), 'Downloads', 'ref')
 const COMP = join(REF, 'Brand Kit-14.png')              // finished hero+lettering composition
 const SHEET = join(REF, 'Brand Kit-5-tee-front-red.png') // lockup explorations (incl. green cell)
 const HERO = join(REF, 'Firefly_one punch man style anime green bell pepper character that is in an action pose for s 55845.png')

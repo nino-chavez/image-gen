@@ -9,13 +9,21 @@ import { OpenRouterProvider } from '../src/providers/openrouter.js'
 import { optimizeAndSave } from '../src/index.js'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { mkdirSync } from 'node:fs'
+import { existsSync, mkdirSync } from 'node:fs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const dir = join(HERE, '..', 'output', 'lpo-apparel')
 mkdirSync(dir, { recursive: true })
 
-const anchor = '/Users/nino/Workspace/dev/apps/letspepper/public/images/mascots/bell-pepper-2.png'
+// Reference-lock anchor. Defaults to the letspepper checkout as a workspace
+// sibling; set LPO_MASCOT_ANCHOR to any white-background character reference.
+const anchor = process.env.LPO_MASCOT_ANCHOR
+  ?? join(HERE, '..', '..', '..', 'apps', 'letspepper', 'public', 'images', 'mascots', 'bell-pepper-2.png')
+
+if (!existsSync(anchor)) {
+  console.error(`Anchor image not found: ${anchor}\nSet LPO_MASCOT_ANCHOR to a white-background character reference.`)
+  process.exit(1)
+}
 
 const KEEP = `Use the EXACT same charming retro brand-mascot character, design, colors, face, proportions and illustration style as the reference image — the vintage 1930s rubber-hose style cartoon green bell pepper mascot whose body IS the pepper, with thin friendly cartoon limbs, white cartoon gloves, retro sneakers, bold dark outlines and flat retro colors (NOT muscular, NOT gritty, NOT modern 3D). Keep his confident winking charm. Only change the action:`
 const TAIL = `Clean professional vintage mascot illustration, bold simple shapes, strong silhouette, flat retro color fills with bold outlines, perfect for screen-print apparel. Full body, centered, solid pure white background, isolated character, no ground shadow, no text, no logos.`

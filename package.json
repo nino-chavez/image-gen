@@ -53,6 +53,11 @@
     "playwright": "^1.58.2",
     "sharp": "^0.34.0"
   },
+  "optionalDependencies": {
+    "canvas": "^3.2.1",
+    "jsdom": "^29.0.0",
+    "qr-code-styling": "^1.9.2"
+  },
   "devDependencies": {
     "@types/node": "^22.0.0"
   },

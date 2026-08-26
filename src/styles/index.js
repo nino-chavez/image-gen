@@ -7,10 +7,12 @@ import { ILLUSTRATION_STYLES } from './illustration.js';
 import { LETS_PEPPER_STYLES } from './lets-pepper.js';
 import { SIGNAL_DISPATCH_STYLES } from './signal-dispatch.js';
 import { VOLLEY_RX_STYLES } from './volley-rx.js';
+import { FLICKDAY_MEDIA_STYLES } from './flickday-media.js';
 
 const STYLE_SYSTEMS = {
   default: BASE_STYLES,
   illustration: ILLUSTRATION_STYLES,
+  'flickday-media': FLICKDAY_MEDIA_STYLES,
   'lets-pepper': LETS_PEPPER_STYLES,
   'signal-dispatch': SIGNAL_DISPATCH_STYLES,
   'volley-rx': VOLLEY_RX_STYLES,
@@ -44,6 +46,7 @@ export function registerStyleSystem(name, styleSystem) {
 
 export {
   BASE_STYLES,
+  FLICKDAY_MEDIA_STYLES,
   ILLUSTRATION_STYLES,
   LETS_PEPPER_STYLES,
   VOLLEY_RX_STYLES,

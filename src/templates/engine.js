@@ -41,8 +41,9 @@ export function renderTemplate(template, data = {}) {
           let itemContent = content;
           if (typeof item === 'object') {
             for (const [k, v] of Object.entries(item)) {
+              // Support both {{key}} and {{this.key}} syntax
               itemContent = itemContent.replace(
-                new RegExp(`\\{\\{${k}\\}\\}`, 'g'),
+                new RegExp(`\\{\\{(?:this\\.)?${k}\\}\\}`, 'g'),
                 escapeHtml(String(v ?? ''))
               );
             }
