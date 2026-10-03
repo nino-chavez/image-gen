@@ -21,6 +21,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { OpenRouterProvider } from '../src/providers/openrouter.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -43,6 +44,154 @@ function assertEqual(actual, expected, message) {
     throw new Error(message || `Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
   }
 }
+
+// Usage fixtures never contact OpenRouter or use real credentials.
+async function withUsageFixture(run) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'image-gen-usage-'));
+  const usageFile = path.join(dir, 'nested', 'usage.jsonl');
+  const bytes = Buffer.from('offline-image-fixture');
+  const response = {
+    id: 'fixture-id',
+    model: 'fixture/model',
+    usage: { cost: 0.1234, prompt_tokens: 11, completion_tokens: 22, total_tokens: 33 },
+    choices: [{ message: { images: [{ image_url: { url: 'data:image/png;base64,' + bytes.toString('base64') } }] } }],
+  };
+  const provider = new OpenRouterProvider({ apiKey: 'fixture-not-a-key', usageFile });
+  let calls = 0;
+  provider.client = { chat: { completions: { create: async () => { calls++; return response; } } } };
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error('Network forbidden in usage tests'); };
+  try {
+    await run({ dir, usageFile, bytes, response, provider, calls: () => calls,
+      rows: () => fs.readFileSync(usageFile, 'utf8').trim().split('\n').map(JSON.parse) });
+  } finally {
+    globalThis.fetch = originalFetch;
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+test('OpenRouter records cost and tokens while returning unchanged image bytes', async () => {
+  await withUsageFixture(async ({ provider, usageFile, rows, bytes, response, calls }) => {
+    const image = await provider.generate('private prompt must not be logged');
+    assert(Buffer.isBuffer(image) && image.equals(bytes), 'Existing Buffer contract must stay intact');
+    response.usage.cost = 0;
+    await provider.generate('another private prompt');
+    const records = rows();
+    assertEqual(records.length, 2);
+    assertEqual(records[0].cost, 0.1234);
+    assertEqual(records[0].cost_status, 'reported');
+    assertEqual(records[0].cost_unit, 'OpenRouter credits');
+    assertEqual(records[0].request_id, 'fixture-id');
+    assertEqual(records[0].model, 'fixture/model');
+    assertEqual(records[0].prompt_tokens, 11);
+    assertEqual(records[0].completion_tokens, 22);
+    assertEqual(records[0].total_tokens, 33);
+    assertEqual(records[0].provider, 'openrouter');
+    assert(Number.isFinite(Date.parse(records[0].recorded_at)), 'Record when the response arrived');
+    assertEqual(fs.statSync(usageFile).mode & 0o777, 0o600, 'New logs should be private');
+    assertEqual(records[1].cost, 0, 'A reported zero is not unknown');
+    assertEqual(records[1].cost_status, 'reported');
+    assertEqual(calls(), 2, 'Recording must not make extra provider calls');
+    assert(!JSON.stringify(records).includes('private prompt'), 'Do not log prompts');
+    assert(!JSON.stringify(records).includes('fixture-not-a-key'), 'Do not log keys');
+  });
+});
+
+test('OpenRouter usage configuration honors explicit paths, opt-out, and environment defaults', () => {
+  const saved = { IMAGE_GEN_USAGE_FILE: process.env.IMAGE_GEN_USAGE_FILE, XDG_STATE_HOME: process.env.XDG_STATE_HOME };
+  try {
+    delete process.env.IMAGE_GEN_USAGE_FILE;
+    delete process.env.XDG_STATE_HOME;
+    const config = { apiKey: 'fixture-not-a-key' };
+    assertEqual(new OpenRouterProvider(config).usageFile, path.join(os.homedir(), '.local', 'state', 'image-gen', 'usage.jsonl'));
+    process.env.XDG_STATE_HOME = '/fixture/state';
+    assertEqual(new OpenRouterProvider(config).usageFile, '/fixture/state/image-gen/usage.jsonl');
+    process.env.IMAGE_GEN_USAGE_FILE = '/fixture/custom.jsonl';
+    assertEqual(new OpenRouterProvider(config).usageFile, '/fixture/custom.jsonl');
+    assertEqual(new OpenRouterProvider({ ...config, usageFile: '/fixture/explicit.jsonl' }).usageFile, '/fixture/explicit.jsonl');
+    assertEqual(new OpenRouterProvider({ ...config, usageFile: false }).usageFile, false);
+  } finally {
+    for (const [key, value] of Object.entries(saved)) {
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    }
+  }
+});
+
+test('OpenRouter records absent or invalid cost as unknown, never zero', async () => {
+  await withUsageFixture(async ({ provider, response, rows }) => {
+    for (const usage of [undefined, {}, { cost: null }, { cost: '' }, { cost: '0' },
+      { cost: NaN }, { cost: Infinity }, { cost: -1 }]) {
+      response.usage = usage;
+      await provider.generate('fixture');
+    }
+    for (const row of rows()) {
+      assertEqual(row.cost, null);
+      assertEqual(row.cost_status, 'unknown');
+      assertEqual(row.prompt_tokens, null);
+    }
+  });
+});
+
+test('OpenRouter appends complete records for concurrent provider instances', async () => {
+  await withUsageFixture(async ({ provider, usageFile, response, rows, bytes }) => {
+    const second = new OpenRouterProvider({ apiKey: 'fixture-not-a-key', usageFile });
+    second.client = { chat: { completions: { create: async () => ({ ...response, id: 'second-id' }) } } };
+    const results = await Promise.all(Array.from({ length: 12 }, (_, i) =>
+      (i % 2 ? second : provider).generate('fixture')));
+    assert(results.every(result => result.equals(bytes)), 'Every caller should receive its image');
+    assertEqual(rows().length, 12);
+    assertEqual(rows().filter(row => row.request_id === 'second-id').length, 6);
+  });
+});
+
+test('OpenRouter records charged completions even when no image can be extracted', async () => {
+  await withUsageFixture(async ({ provider, response, rows }) => {
+    response.choices = [{ message: { content: 'No image' } }];
+    let error;
+    try { await provider.generate('fixture'); } catch (caught) { error = caught; }
+    assert(error?.message.includes('No image found'), 'Keep the existing image error');
+    assertEqual(rows()[0].cost, 0.1234);
+  });
+});
+
+test('OpenRouter recording failure warns without losing the image or retrying a paid request', async () => {
+  await withUsageFixture(async ({ provider, usageFile, dir, bytes, calls }) => {
+    fs.writeFileSync(path.join(dir, 'nested'), 'parent is a file');
+    const originalWarn = console.warn;
+    const warnings = [];
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      const result = await provider.generate('private fixture prompt');
+      assert(result.equals(bytes), 'A log error must not discard the generated image');
+      assertEqual(calls(), 1);
+      assertEqual(warnings.length, 1);
+      assert(warnings[0].includes(usageFile), 'The warning must identify the failed usage file');
+      assert(!warnings[0].includes('private fixture prompt'));
+    } finally {
+      console.warn = originalWarn;
+    }
+  });
+});
+
+test('OpenRouter failed requests do not invent a zero-cost response', async () => {
+  await withUsageFixture(async ({ provider, usageFile }) => {
+    provider.client.chat.completions.create = async () => { throw new Error('offline request failure'); };
+    let error;
+    try { await provider.generate('fixture'); } catch (caught) { error = caught; }
+    assertEqual(error?.message, 'offline request failure');
+    assert(!fs.existsSync(usageFile), 'There was no response to record');
+  });
+});
+
+test('OpenRouter usage recording can be explicitly disabled', async () => {
+  await withUsageFixture(async ({ provider, usageFile, bytes }) => {
+    provider.usageFile = false;
+    const result = await provider.generate('fixture');
+    assert(result.equals(bytes));
+    assert(!fs.existsSync(usageFile));
+  });
+});
 
 // ── Style System Tests ──────────────────────────────────────────
 

@@ -4,6 +4,9 @@
  */
 
 import OpenAI from 'openai';
+import { appendFile, mkdir } from 'node:fs/promises';
+import { homedir } from 'node:os';
+import { dirname, join } from 'node:path';
 import { BaseImageProvider } from './base.js';
 
 const MODELS = {
@@ -24,6 +27,10 @@ export class OpenRouterProvider extends BaseImageProvider {
     this.model = MODELS[config.model] || config.model || MODELS['gemini-flash'];
     this.referer = config.referer || 'https://github.com/nino-tools/image-gen';
     this.siteName = config.siteName || 'Image Generator';
+    this.usageFile = config.usageFile ?? (process.env.IMAGE_GEN_USAGE_FILE || join(
+      process.env.XDG_STATE_HOME || join(homedir(), '.local', 'state'),
+      'image-gen', 'usage.jsonl'
+    ));
 
     if (this.apiKey) {
       this.client = new OpenAI({
@@ -100,6 +107,36 @@ export class OpenRouterProvider extends BaseImageProvider {
     return Buffer.from(base64Data, 'base64');
   }
 
+  async recordUsage(response) {
+    if (this.usageFile === false) return;
+
+    // Missing or malformed accounting is unknown; a reported zero stays zero.
+    const numberOrNull = (value) => typeof value === 'number' && Number.isFinite(value) && value >= 0
+      ? value : null;
+    const usage = response.usage;
+    const cost = numberOrNull(usage?.cost);
+    const record = {
+      recorded_at: new Date().toISOString(),
+      provider: this.name,
+      request_id: response.id ?? null,
+      model: response.model || this.model,
+      cost,
+      cost_status: cost === null ? 'unknown' : 'reported',
+      cost_unit: 'OpenRouter credits',
+      prompt_tokens: numberOrNull(usage?.prompt_tokens),
+      completion_tokens: numberOrNull(usage?.completion_tokens),
+      total_tokens: numberOrNull(usage?.total_tokens),
+    };
+
+    try {
+      await mkdir(dirname(this.usageFile), { recursive: true, mode: 0o700 });
+      await appendFile(this.usageFile, JSON.stringify(record) + '\n', { mode: 0o600 });
+    } catch (error) {
+      // A local log failure must not discard an already-paid image or trigger a retry.
+      console.warn(`Image-gen could not record usage at ${this.usageFile} (${error.code || 'write failed'}).`);
+    }
+  }
+
   async generate(prompt, options = {}) {
     if (!this.client) {
       throw new Error('OpenRouter API key not configured');
@@ -131,6 +168,9 @@ export class OpenRouterProvider extends BaseImageProvider {
         },
       ],
     });
+
+    // Record completed requests even if image extraction subsequently fails.
+    await this.recordUsage(response);
 
     const message = response.choices?.[0]?.message;
     const imageBuffer = this.extractImageData(message);
