@@ -41,6 +41,14 @@ The generation scripts under `scripts/` read four non-secret settings, all optio
 | `FD_MODEL` | `flickday-d-glyph.mjs`, `flickday-reel-wordmark.mjs` | `gpt-image` |
 | `FD_NOREF` | `flickday-reel-wordmark.mjs` | unset — set it to render without the reference image |
 
+## Usage Recording
+
+OpenRouter responses are appended to a local JSON Lines file, one record per completed request. The default is `~/.local/state/image-gen/usage.jsonl`, or `$XDG_STATE_HOME/image-gen/usage.jsonl` when set. Override the path with `IMAGE_GEN_USAGE_FILE` or the provider's `usageFile` configuration. Set `usageFile: false` to disable recording through the library.
+
+Each record contains the timestamp, request ID, model, token counts, and OpenRouter's reported `usage.cost` in credits. A missing or invalid cost is `null` with `cost_status: "unknown"`; an explicit zero remains zero with `cost_status: "reported"`. Do not count unknown costs as free requests. Prompts, credentials, and image data are not logged.
+
+Recording preserves the existing image return values and makes no additional API calls. A completed response is recorded even if it contains no usable image. A failed API request produces no record. If the log cannot be written, a warning is emitted and the image is still returned. HTML rendering produces no OpenRouter usage records. This log tracks future responses; it does not enforce a spending limit or reconstruct past charges.
+
 ## CLI Usage
 
 ### AI Generation
